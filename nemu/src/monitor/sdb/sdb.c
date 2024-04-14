@@ -71,11 +71,11 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute n(default n=1) instructions in single steps of the program", cmd_si },
-  {"info", "", cmd_info },
-  {"x", "", cmd_x },
-  {"p", "", cmd_p },
-  {"w", "", cmd_w },
-  {"d", "", cmd_d }
+  {"info", "Get infomation about the program", cmd_info },
+  {"x", "Scan the memory", cmd_x },
+  {"p", "Evaluate an expression", cmd_p },
+  {"w", "Set watchpoint", cmd_w },
+  {"d", "Delete watchpoint", cmd_d }
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -103,7 +103,7 @@ static int cmd_help(char *args) {
   return 0;
 }
 
-static int cmd_si(char *args){
+static int cmd_si(char *args) {
   if(args == NULL)
     cpu_exec(1);
   else {
@@ -118,8 +118,8 @@ static int cmd_si(char *args){
   return 0;
 }
 
-static int cmd_info(char *args){
-  if(args == NULL){
+static int cmd_info(char *args) {
+  if(args == NULL) {
     printf("Usage: info SUBCMD\n");
     return 0;
   }
@@ -127,7 +127,7 @@ static int cmd_info(char *args){
   char type = 0;
   sscanf(args, "%c", &type);
 
-  if(type == 'r'){
+  if(type == 'r') {
     isa_reg_display();
   } else if(type == 'w') {
 
@@ -137,8 +137,8 @@ static int cmd_info(char *args){
   return 0;
 }
 
-static int cmd_x(char *args){
-  if(args == NULL){
+static int cmd_x(char *args) {
+  if(args == NULL) {
     printf("Usage: x N EXPR\n");
     return 0;
   }
@@ -147,7 +147,7 @@ static int cmd_x(char *args){
   vaddr_t addr;
   int t = sscanf(args, "%d %x", &n, &addr);
 
-  if(t < 2){
+  if(t < 2) {
     printf("Usage: x N EXPR\n");
     return 0;
   }
