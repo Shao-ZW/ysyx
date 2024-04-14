@@ -20,11 +20,14 @@
  */
 #include <regex.h>
 
+#define IS_BIN_OPERATOR(type) (type == TK_AND || type == TK_EQ || type == TK_NEQ || type == '+' || type == '-' || type == '*' || type == '/')
+#define IS_SIG_OPERATOR(type) (type == TK_DEREF || type == TK_POS || type == TK_NEG)
+#define NTOKEN 256
+
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-
-  /* TODO: Add more token types */
-
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ,
+  TK_DEC, TK_BIN, TK_HEX,
+  TK_REG, TK_AND, TK_DEREF, TK_POS, TK_NEG
 };
 
 static struct rule {
@@ -32,13 +35,20 @@ static struct rule {
   int token_type;
 } rules[] = {
 
-  /* TODO: Add more rules.
-   * Pay attention to the precedence level of different rules.
-   */
-
-  {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
-  {"==", TK_EQ},        // equal
+  {"0[Xx][0-9a-fA-F]+", TK_HEX},          // hexadecimal integer
+  {"0[Bb][01]+", TK_BIN},                 // binary integer
+  {"[0-9]+", TK_DEC},                     // decimal integer
+  {"\\$[\\$a-z][0-9]{1,2}", TK_REG},      // access reg
+  {" +", TK_NOTYPE},                      // spaces
+  {"\\+", '+'},                           // plus | plus sign
+  {"\\-", '-'},                           // sub | minus sign
+  {"\\*", '*'},                           // mul | dereference
+  {"\\/", '/'},                           // div
+  {"\\(", '('},                           // left paren
+  {"\\)", ')'},                           // right paren
+  {"==", TK_EQ},                          // equal
+  {"!=", TK_NEQ},                         // not equal
+  {"&&", TK_AND}                          // and
 };
 
 #define NR_REGEX ARRLEN(rules)

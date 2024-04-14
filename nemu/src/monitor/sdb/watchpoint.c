@@ -21,23 +21,80 @@ typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
 
-  /* TODO: Add more members if necessary */
-
+  int old_val;
+  char expression[128];
 } WP;
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int cnt = 0;
 
 void init_wp_pool() {
   int i;
-  for (i = 0; i < NR_WP; i ++) {
-    wp_pool[i].NO = i;
+  for (i = 0; i < NR_WP; i ++) 
     wp_pool[i].next = (i == NR_WP - 1 ? NULL : &wp_pool[i + 1]);
-  }
 
   head = NULL;
   free_ = wp_pool;
 }
 
-/* TODO: Implement the functionality of watchpoint */
+static WP* new_wp() {
+  WP *p = free_;
+  assert(p != NULL);
+  free_ = p->next;
+  return p;
+}
 
+void free_wp(int n) {
+  WP *p, *lp;
+  
+  for(p = lp = head; p; p = p->next) {
+    if(p->NO == n) {
+      if(p == head) 
+        head = p->next;
+      else 
+        lp->next = p->next;
+      p->next = free_;
+      free_ = p;
+      return;
+    }
+    lp = p;
+  }
+}
+
+void wp_display() {
+  printf("Num    Disp    Enb    What\n");
+
+  if(head == NULL)
+    printf("NONE   NONE    NONE   NONE\n");
+
+  for(WP *p = head; p; p = p->next) 
+    printf("%-3d    keep    y      %s\n", p->NO, p->expression);
+}
+
+void add_wp(char *expression, word_t val) {
+  WP *p = new_wp();
+  p->old_val = val;
+  p->NO = cnt++;
+  strncpy(p->expression, expression, 127);
+  p->expression[127] = '\0';
+  p->next = head;
+  head = p;
+}
+
+int check_wp() {
+  int c = 0;
+
+  for(WP *p = head; p; p = p->next) {
+    bool success = true;
+    word_t new_val = expr(p->expression, &success);
+    assert(success);
+    if(p->old_val != new_val) {
+      printf("%-3d %-10s old val:%-5u new val: %-5u\n", p->NO, p->expression, p->old_val, new_val);
+      p->old_val = new_val;
+      c++;
+    }
+  }
+
+  return c;
+}

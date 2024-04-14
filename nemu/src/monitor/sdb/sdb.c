@@ -24,6 +24,9 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void add_wp(char*, word_t);
+void free_wp(int);
+void wp_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -50,7 +53,6 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
-  nemu_state.state = NEMU_QUIT;
   return -1;
 }
 
@@ -71,11 +73,11 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute n(default n=1) instructions in single steps of the program", cmd_si },
-  {"info", "Get infomation about the program", cmd_info },
-  {"x", "Scan the memory", cmd_x },
-  {"p", "Evaluate an expression", cmd_p },
-  {"w", "Set watchpoint", cmd_w },
-  {"d", "Delete watchpoint", cmd_d }
+  {"info", "", cmd_info },
+  {"x", "", cmd_x },
+  {"p", "", cmd_p },
+  {"w", "", cmd_w },
+  {"d", "", cmd_d }
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -103,7 +105,7 @@ static int cmd_help(char *args) {
   return 0;
 }
 
-static int cmd_si(char *args) {
+static int cmd_si(char *args){
   if(args == NULL)
     cpu_exec(1);
   else {
@@ -118,59 +120,89 @@ static int cmd_si(char *args) {
   return 0;
 }
 
-static int cmd_info(char *args) {
-  if(args == NULL) {
+static int cmd_info(char *args){
+  if(args == NULL){
     printf("Usage: info SUBCMD\n");
     return 0;
   }
-
+    
   char type = 0;
   sscanf(args, "%c", &type);
 
-  if(type == 'r') {
+  if(type == 'r'){
     isa_reg_display();
   } else if(type == 'w') {
-
+    wp_display();
   } else {
     printf("Unknown argument %s\n", args);
   } 
   return 0;
 }
 
-static int cmd_x(char *args) {
-  if(args == NULL) {
+static int cmd_x(char *args){
+  if(args == NULL){
     printf("Usage: x N EXPR\n");
     return 0;
   }
 
   int n;
-  vaddr_t addr;
-  int t = sscanf(args, "%d %x", &n, &addr);
+  char expression[128];
+  int t = sscanf(args, "%d %[^\n]", &n, expression);
 
-  if(t < 2) {
+  if(t == 2) {
+    bool success = true;
+    vaddr_t addr = expr(expression, &success);
+
+    if(success) {
+      for(int i = 0; i < n; i++){
+        word_t val = vaddr_read(addr, 4);
+        printf("0x%08x: %08x\n", addr, val);
+        addr += 4;
+      }
+    }
+    else 
+      printf("x: please give a proper expression\n");
+  }
+  else 
     printf("Usage: x N EXPR\n");
-    return 0;
-  }
-
-  for(int i = 0; i < n; i++) {
-    word_t val = vaddr_read(addr, 4);
-    printf("0x%08x: %08x\n", addr, val);
-    addr += 4;
-  }
+  
   return 0;
 }
 
-static int cmd_p(char *args) {
+static int cmd_p(char *args){
+  char *expression = args;
+  bool success = true;
+  word_t ans = expr(expression, &success);
 
-  return 0;
-}
-
-static int cmd_w(char *args) {
+  if(success)
+    printf("%s = %u\n", expression, ans);
+  else
+    printf("p: please give a proper expression\n");
 
   return 0;
 }
 
-static int cmd_d(char *args) {
+static int cmd_w(char *args){
+  char *expression = args;
+  bool success = true;
+  word_t val = expr(expression, &success);
+
+  if(success)
+    add_wp(expression, val);
+  else 
+    printf("t: please give a proper expression\n");
+
+  return 0;
+}
+
+static int cmd_d(char *args){
+  int n;
+  int t = sscanf(args, "%d", &n);
+
+  if(t == 1) 
+    free_wp(n);
+  else 
+    printf("Usage: d N\n");
 
   return 0;
 }
