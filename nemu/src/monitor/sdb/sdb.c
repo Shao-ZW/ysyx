@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/vaddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -54,6 +55,12 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
+static int cmd_si(char *args);
+static int cmd_info(char *args);
+static int cmd_x(char *args);
+static int cmd_p(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
   const char *name;
@@ -63,9 +70,12 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
-  /* TODO: Add more commands */
-
+  { "si", "Execute n(default n=1) instructions in single steps of the program", cmd_si },
+  {"info", "", cmd_info },
+  {"x", "", cmd_x },
+  {"p", "", cmd_p },
+  {"w", "", cmd_w },
+  {"d", "", cmd_d }
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -90,6 +100,78 @@ static int cmd_help(char *args) {
     }
     printf("Unknown command '%s'\n", arg);
   }
+  return 0;
+}
+
+static int cmd_si(char *args){
+  if(args == NULL)
+    cpu_exec(1);
+  else {
+    int step;
+    int t = sscanf(args, "%d", &step);
+
+    if(t == 1)
+      cpu_exec(step);
+    else 
+      printf("Usage: si [N]\n");
+  }
+  return 0;
+}
+
+static int cmd_info(char *args){
+  if(args == NULL){
+    printf("Usage: info SUBCMD\n");
+    return 0;
+  }
+
+  char type = 0;
+  sscanf(args, "%c", &type);
+
+  if(type == 'r'){
+    isa_reg_display();
+  } else if(type == 'w') {
+
+  } else {
+    printf("Unknown argument %s\n", args);
+  } 
+  return 0;
+}
+
+static int cmd_x(char *args){
+  if(args == NULL){
+    printf("Usage: x N EXPR\n");
+    return 0;
+  }
+
+  int n;
+  vaddr_t addr;
+  int t = sscanf(args, "%d %x", &n, &addr);
+
+  if(t < 2){
+    printf("Usage: x N EXPR\n");
+    return 0;
+  }
+
+  for(int i = 0; i < n; i++) {
+    word_t val = vaddr_read(addr, 4);
+    printf("0x%08x: %08x\n", addr, val);
+    addr += 4;
+  }
+  return 0;
+}
+
+static int cmd_p(char *args) {
+
+  return 0;
+}
+
+static int cmd_w(char *args) {
+
+  return 0;
+}
+
+static int cmd_d(char *args) {
+
   return 0;
 }
 
