@@ -30,10 +30,9 @@ static WP *head = NULL, *free_ = NULL;
 static int cnt = 0;
 
 void init_wp_pool() {
-  int i;
-  for (i = 0; i < NR_WP; i ++) 
+  for (int i = 0; i < NR_WP; i ++) 
     wp_pool[i].next = (i == NR_WP - 1 ? NULL : &wp_pool[i + 1]);
-
+  
   head = NULL;
   free_ = wp_pool;
 }
@@ -42,6 +41,9 @@ static WP* new_wp() {
   WP *p = free_;
   assert(p != NULL);
   free_ = p->next;
+  p->next = head;
+  head = p;
+  
   return p;
 }
 
@@ -58,6 +60,7 @@ void free_wp(int n) {
       free_ = p;
       return;
     }
+
     lp = p;
   }
 }
@@ -78,8 +81,6 @@ void add_wp(char *expression, word_t val) {
   p->NO = cnt++;
   strncpy(p->expression, expression, 127);
   p->expression[127] = '\0';
-  p->next = head;
-  head = p;
 }
 
 int check_wp() {
