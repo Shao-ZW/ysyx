@@ -321,3 +321,22 @@ word_t expr(char *e, bool *success) {
 
   return res;
 }
+
+void expr_test() {
+  FILE *fp = fopen("tools/gen-expr/build/input.txt", "r");
+  assert(fp != NULL);
+
+  char expression[65536];
+  unsigned right_ans;
+  for(int i = 0; i < 1000; ++i) {
+    int t = fscanf(fp, "%u %s", &right_ans, expression);
+    assert(t == 2);
+    bool success = true;
+    word_t res = expr(expression, &success);
+    
+    if(!success || (res != right_ans)) 
+      printf("%d fali: flag: %d my_res:%u right_ans:%u expr:%s\n", i, success, res, right_ans, expression);      
+    else  
+      printf("%d ok\n", i);
+  }
+}
