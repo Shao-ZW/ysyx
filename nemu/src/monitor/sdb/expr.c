@@ -330,9 +330,10 @@ void expr_test() {
 
   char expression[65536];
   unsigned right_ans;
-  for(int i = 0; i < 100; ++i) {
-    int t = fscanf(fp_in, "%u %s", &right_ans, expression);
-    assert(t == 2);
+  for(int i = 0; i < 1000; ++i) {
+    if(fscanf(fp_in, "%u %s", &right_ans, expression) != 2) 
+      break;
+
     bool success = true;
     word_t res = expr(expression, &success);
     
