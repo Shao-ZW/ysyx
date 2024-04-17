@@ -83,8 +83,8 @@ void add_wp(char *expression, word_t val) {
   p->expression[127] = '\0';
 }
 
-int check_wp() {
-  int c = 0;
+void check_wp() {
+  bool flag = false;
 
   for(WP *p = head; p; p = p->next) {
     bool success = true;
@@ -93,9 +93,10 @@ int check_wp() {
     if(p->old_val != new_val) {
       printf("%-3d %-10s old val:%-5u new val: %-5u\n", p->NO, p->expression, p->old_val, new_val);
       p->old_val = new_val;
-      c++;
+      flag = true;
     }
   }
 
-  return c;
+  if(flag) 
+    nemu_state.state = NEMU_STOP;
 }
