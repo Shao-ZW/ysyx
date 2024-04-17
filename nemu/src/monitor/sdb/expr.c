@@ -323,20 +323,25 @@ word_t expr(char *e, bool *success) {
 }
 
 void expr_test() {
-  FILE *fp = fopen("tools/gen-expr/input.txt", "r");
-  assert(fp != NULL);
+  FILE *fp_in = fopen("tools/gen-expr/input.txt", "r");
+  FILE *fp_out = fopen("output.txt", "w"); // 打开用于写入输出的文件
+  assert(fp_in != NULL);
+  assert(fp_out != NULL);
 
   char expression[65536];
   unsigned right_ans;
   for(int i = 0; i < 1000; ++i) {
-    int t = fscanf(fp, "%u %s", &right_ans, expression);
+    int t = fscanf(fp_in, "%u %s", &right_ans, expression);
     assert(t == 2);
     bool success = true;
     word_t res = expr(expression, &success);
     
     if(!success || (res != right_ans)) 
-      printf("%d fali: flag: %d my_res:%u right_ans:%u expr:%s\n", i, success, res, right_ans, expression);      
+      fprintf(fp_out, "%d fali: flag: %d my_res:%u right_ans:%u expr:%s\n", i, success, res, right_ans, expression);      
     else  
-      printf("%d ok\n", i);
+      fprintf(fp_out, "%d ok\n", i);
   }
+
+  fclose(fp_in);
+  fclose(fp_out);
 }
