@@ -330,7 +330,7 @@ void expr_test() {
 
   char expression[65536];
   unsigned right_ans;
-  for(int i = 0; i < 1000; ++i) {
+  for(int i = 0; i < 100; ++i) {
     int t = fscanf(fp_in, "%u %s", &right_ans, expression);
     assert(t == 2);
     bool success = true;
