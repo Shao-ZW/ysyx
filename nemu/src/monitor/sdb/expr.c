@@ -336,8 +336,10 @@ void expr_test() {
     bool success = true;
     word_t res = expr(expression, &success);
     
-    if(!success || (res != right_ans)) 
-      fprintf(fp_out, "%d fali: flag: %d my_res:%u right_ans:%u expr:%s\n", i, success, res, right_ans, expression);      
+    if(!success || (res != right_ans)) {
+      fprintf(fp_out, "%d fali: flag: %d my_res:%u right_ans:%u expr:%s\n", i, success, res, right_ans, expression);
+      printf("no\n");
+    }
     else  
       fprintf(fp_out, "%d ok\n", i);
   }
