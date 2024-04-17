@@ -323,7 +323,7 @@ word_t expr(char *e, bool *success) {
 }
 
 void expr_test() {
-  FILE *fp = fopen("tools/gen-expr/build/input.txt", "r");
+  FILE *fp = fopen("tools/gen-expr/input.txt", "r");
   assert(fp != NULL);
 
   char expression[65536];
