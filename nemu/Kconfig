@@ -129,6 +129,10 @@ config WATCHPOINT
   bool "Enable watchpoint"
   default y
 
+config EXPRTEST
+  bool "Enable expr test"
+  default n
+
 config TRACE
   bool "Enable tracer"
   default y

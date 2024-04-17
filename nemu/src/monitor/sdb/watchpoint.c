@@ -91,7 +91,7 @@ void check_wp() {
     word_t new_val = expr(p->expression, &success);
     assert(success);
     if(p->old_val != new_val) {
-      printf("%-3d %-10s old val:%-5u new val: %-5u\n", p->NO, p->expression, p->old_val, new_val);
+      printf("%-3d %-10s old val: %-5u new val: %-5u\n", p->NO, p->expression, p->old_val, new_val);
       p->old_val = new_val;
       flag = true;
     }

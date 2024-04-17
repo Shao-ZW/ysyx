@@ -41,12 +41,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
   IFDEF(CONFIG_WATCHPOINT, check_wp());
-
-  // int t = check_wp();
-  // if(t) {
-  //   printf("hit %d watchpoint!\n", t);
-  //   nemu_state.state = NEMU_STOP;
-  // }
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
