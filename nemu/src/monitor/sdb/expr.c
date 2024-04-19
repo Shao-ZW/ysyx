@@ -324,7 +324,7 @@ word_t expr(char *e, bool *success) {
 
 void expr_test() {
   FILE *fp_in = fopen("tools/gen-expr/input.txt", "r");
-  FILE *fp_out = fopen("output.txt", "w"); // 打开用于写入输出的文件
+  FILE *fp_out = fopen("output.txt", "w");
   assert(fp_in != NULL);
   assert(fp_out != NULL);
 
@@ -337,10 +337,8 @@ void expr_test() {
     bool success = true;
     word_t res = expr(expression, &success);
     
-    if(!success || (res != right_ans)) {
+    if(!success || (res != right_ans)) 
       fprintf(fp_out, "%d fali: flag: %d my_res:%u right_ans:%u expr:%s\n", i, success, res, right_ans, expression);
-      //printf("no\n");
-    }
     else  
       fprintf(fp_out, "%d ok\n", i);
   }

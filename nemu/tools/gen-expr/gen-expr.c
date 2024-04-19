@@ -21,7 +21,7 @@
 #include <string.h>
 
 #define NBUF 65536
-// this should be enough
+
 static char buf[NBUF] = {};
 static char code_buf[NBUF + 128] = {}; // a little larger than `buf`
 static char *code_format =
