@@ -6,6 +6,10 @@ module CPU(
     wire [31:0] rs1_addr, rs2_addr, rd_addr;
     wire [31:0] imm;
     wire [31:0] rs1_data, rs2_data, rd_data;
+    wire branch;
+    wire memwrite;
+    wire memread;
+    wire regwirte;
     
     RegisterFile #(5, 32) RegisterFile_u(
         .clk(clk),
@@ -18,12 +22,13 @@ module CPU(
         .rdata2(rs2_data)
     );
 
+
     IFU IFU_u(
         .pc(pc),
         .instruction(instruction)
     );
 
-    Control Control_u(
+    Controller Controller_u(
         .instruction(instruction);
     );
 
