@@ -18,6 +18,7 @@
 void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
+void expr_test();
 int is_exit_status_bad();
 
 int main(int argc, char *argv[]) {
@@ -27,6 +28,9 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
+
+  /* Test expr. */
+  IFDEF(CONFIG_EXPRTEST, expr_test());
 
   /* Start engine. */
   engine_start();
