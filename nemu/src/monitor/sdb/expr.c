@@ -316,9 +316,7 @@ word_t expr(char *e, bool *success) {
   }
 
   token_processing();
-
   word_t res = eval(0, nr_token - 1, success);
-
   return res;
 }
 

@@ -52,7 +52,7 @@ static void gen_rand_num(int *success) {
     num /= 10;
   }
 
-  while(t > 0) 
+  while(t > 0)
     gen(digit[--t] + '0', success);
 }
 

@@ -191,7 +191,7 @@ static int cmd_w(char *args) {
   if(success)
     add_wp(expression, val);
   else 
-    printf("t: please give a proper expression\n");
+    printf("w: please give a proper expression\n");
 
   return 0;
 }
