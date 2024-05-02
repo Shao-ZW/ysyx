@@ -48,6 +48,7 @@ endif
 ### Create the destination directory (`build/$ARCH`)
 WORK_DIR  = $(shell pwd)
 DST_DIR   = $(WORK_DIR)/build/$(ARCH)
+#$(shell echo $(DST_DIR))
 $(shell mkdir -p $(DST_DIR))
 
 ### Compilation targets (a binary image or archive)
