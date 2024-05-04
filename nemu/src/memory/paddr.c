@@ -52,7 +52,7 @@ void init_mem() {
 
 word_t paddr_read(paddr_t addr, int len) {
   #ifdef CONFIG_MTRACE
-  printf("memory read: ");
+  printf("memory read:  ");
   printf(FMT_WORD, addr);
   printf("\n");
   #endif
