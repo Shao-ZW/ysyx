@@ -15,6 +15,8 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
+#include <elf.h>
+#include <common.h>
 
 void init_rand();
 void init_log(const char *log_file);
@@ -40,6 +42,7 @@ static void welcome() {
 void sdb_set_batch_mode();
 
 static char *log_file = NULL;
+static char *elf_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
@@ -70,23 +73,26 @@ static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
     {"log"      , required_argument, NULL, 'l'},
+    {"ftrace"   , required_argument, NULL, 'f'},
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:f:d:p:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
+      case 'f': elf_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
         printf("\t-b,--batch              run with batch mode\n");
         printf("\t-l,--log=FILE           output log to FILE\n");
+        printf("\t-f,--elf=FILE           run with ftrace");
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
         printf("\n");
@@ -94,6 +100,52 @@ static int parse_args(int argc, char *argv[]) {
     }
   }
   return 0;
+}
+
+
+static void init_ftrace(const char *elf_file) {
+  if(elf_file == NULL)
+    return ;
+
+typedef MUXDEF(CONFIG_ISA64, Elf64_Ehdr, Elf32_Ehdr) Ehdr;
+typedef MUXDEF(CONFIG_ISA64, Elf64_Shdr, Elf32_Shdr) Shdr;
+typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
+
+  FILE *fp = fopen(elf_file, "rb");
+  Assert(fp, "Can not open '%s'", elf_file);
+
+  // read elf header
+  Ehdr elf_header;
+  int ret = fread(&elf_header, sizeof(Ehdr), 1, fp);
+  assert(ret == 1);
+  
+  // read section header
+  Shdr section_headers[elf_header.e_shnum];
+  fseek(fp, elf_header.e_shoff, SEEK_SET);
+  ret = fread(section_headers, sizeof(Shdr), elf_header.e_shnum, fp);
+
+  // find symbol table and string table
+  Shdr *symtab_entry = NULL;
+  Shdr *strtab_entry = NULL;
+  for(int i = 0; i < elf_header.e_shnum; ++i) {
+    if(section_headers[i].sh_type == SHT_SYMTAB) 
+      symtab_entry = &section_headers[i];
+    else if(section_headers[i].sh_type == SHT_STRTAB)
+      strtab_entry = &section_headers[i];
+  }
+
+  // read symbol table
+  int symbols_num = symtab_entry->sh_size / sizeof(Sym);
+  Sym symtab[symbols_num];
+  char symname[symbols_num][100];
+  fseek(fp, symtab_entry->sh_offset, SEEK_SET);
+  ret = fread(symtab, sizeof(Sym), symbols_num, fp);
+
+  for(int i = 0; i < symbols_num; ++i) {
+    int name_offset = symtab[i].st_name;
+    fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
+    ret = fscanf(fp, "%s", symname[i]);
+  }
 }
 
 void init_monitor(int argc, char *argv[]) {
@@ -107,6 +159,9 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Open the log file. */
   init_log(log_file);
+
+  /* Read elf file for ftrace. */
+  init_ftrace(elf_file);
 
   /* Initialize memory. */
   init_mem();
