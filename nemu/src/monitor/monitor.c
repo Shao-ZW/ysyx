@@ -102,6 +102,7 @@ static int parse_args(int argc, char *argv[]) {
   return 0;
 }
 
+#define ELF_ST_TYPE(x) MUXDEF(CONFIG_ISA64, ELF64_ST_TYPE(x), ELF32_ST_TYPE(x))
 
 static void init_ftrace(const char *elf_file) {
   if(elf_file == NULL)
@@ -123,6 +124,7 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
   Shdr section_headers[elf_header.e_shnum];
   fseek(fp, elf_header.e_shoff, SEEK_SET);
   ret = fread(section_headers, sizeof(Shdr), elf_header.e_shnum, fp);
+  assert(ret == elf_header.e_shnum);
 
   // find symbol table and string table
   Shdr *symtab_entry = NULL;
@@ -140,14 +142,15 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
   char symname[symbols_num][100];
   fseek(fp, symtab_entry->sh_offset, SEEK_SET);
   ret = fread(symtab, sizeof(Sym), symbols_num, fp);
+  assert(ret == symbols_num);
 
   for(int i = 0; i < symbols_num; ++i) {
-    //printf("%d  ", symtab[i].st_info );
-    if(ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
+    if(ELF_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
       int name_offset = symtab[i].st_name;
       fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
       ret = fscanf(fp, "%s", symname[i]);
-      printf("%s\n", symname[i]);
+      assert(ret == 1);
+      //printf("%s\n", symname[i]);
     }
   }
 }
