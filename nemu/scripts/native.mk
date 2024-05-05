@@ -24,7 +24,8 @@ $(BINARY):: compile_git
 
 # Some convenient rules
 ifdef ARGS
-LOG_FOUND := hello
+LOG_FOUND := $(filter --log%, $(ARGS))
+
 ifeq ($(LOG_FOUND),)
 ARGS += --log=$(BUILD_DIR)/nemu-log.txt
 endif
