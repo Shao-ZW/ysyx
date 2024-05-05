@@ -26,7 +26,7 @@ $(BINARY):: compile_git
 ifdef ARGS
 LOG_FOUND := $(filter --log%, $(ARGS))
 ifeq ($(LOG_FOUND),)
-ARGS += --log=$(BUILD_DIR)/nemu-log.txt
+override ARGS += --log=$(BUILD_DIR)/nemu-log.txt
 endif
 endif
 
