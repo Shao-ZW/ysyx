@@ -23,12 +23,12 @@ compile_git:
 $(BINARY):: compile_git
 
 # Some convenient rules
-# ifdef ARGS
-# LOG_FOUND := $(filter --log%, $(ARGS))
-# ifeq ($(LOG_FOUND),)
-# override ARGS += --log=$(BUILD_DIR)/nemu-log.txt
-# endif
-# endif
+ifdef ARGS
+LOG_FOUND := $(filter --log%, $(ARGS))
+ifeq ($(LOG_FOUND),)
+override ARGS += --log=$(BUILD_DIR)/nemu-log.txt
+endif
+endif
 
 override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
