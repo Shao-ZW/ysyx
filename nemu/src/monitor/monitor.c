@@ -124,21 +124,16 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
   fseek(fp, elf_header.e_shoff, SEEK_SET);
   ret = fread(section_headers, sizeof(Shdr), elf_header.e_shnum, fp);
 
-  for(int i = 0; i < elf_header.e_shnum; ++i) {
-    printf("%x %x\n", section_headers[i].sh_addr, section_headers[i].sh_offset);
-  }
   // find symbol table and string table
   Shdr *symtab_entry = NULL;
   Shdr *strtab_entry = NULL;
   for(int i = 0; i < elf_header.e_shnum; ++i) {
     if(section_headers[i].sh_type == SHT_SYMTAB) 
       symtab_entry = &section_headers[i];
-    else if(section_headers[i].sh_type == SHT_STRTAB)
+    else if(strtab_entry == NULL && section_headers[i].sh_type == SHT_STRTAB)
       strtab_entry = &section_headers[i];
-    else if(symtab_entry && strtab_entry)
-      break;
   }
-  //printf("%d %d\n", symtab_entry->sh_offset, strtab_entry->sh_offset);
+  printf("%d %d\n", symtab_entry->sh_offset, strtab_entry->sh_offset);
   // read symbol table
   int symbols_num = symtab_entry->sh_size / sizeof(Sym);
   Sym symtab[symbols_num];
