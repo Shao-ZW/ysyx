@@ -26,13 +26,12 @@ $(BINARY):: compile_git
 ifdef ARGS
 LOG_FOUND := $(filter --log%, $(ARGS))
 ifeq ($(LOG_FOUND),)
-fuck := fuck
 ARGS += --log=$(BUILD_DIR)/nemu-log.txt
 endif
 endif
 
-override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
-override ARGS += $(ARGS_DIFF)
+# override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
+# override ARGS += $(ARGS_DIFF)
 
 # Command to execute NEMU
 IMG ?=
@@ -41,7 +40,6 @@ NEMU_EXEC := $(BINARY) $(ARGS) $(IMG)
 run-env: $(BINARY) $(DIFF_REF_SO)
 
 run: run-env
-	echo $(fuck)
 	$(call git_commit, "run NEMU")
 	$(NEMU_EXEC)
 
