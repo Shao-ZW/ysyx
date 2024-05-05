@@ -135,7 +135,7 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
     else if(symtab_entry && strtab_entry)
       break;
   }
-
+  printf("%d %d\n", symtab_entry->sh_offset, strtab_entry->sh_offset);
   // read symbol table
   int symbols_num = symtab_entry->sh_size / sizeof(Sym);
   Sym symtab[symbols_num];
