@@ -102,12 +102,13 @@ static int parse_args(int argc, char *argv[]) {
   return 0;
 }
 
-#define ELF_ST_TYPE(x) MUXDEF(CONFIG_ISA64, ELF64_ST_TYPE(x), ELF32_ST_TYPE(x))
+
 
 static void init_ftrace(const char *elf_file) {
   if(elf_file == NULL)
     return ;
 
+#define ELF_ST_TYPE(x) MUXDEF(CONFIG_ISA64, ELF64_ST_TYPE(x), ELF32_ST_TYPE(x))
 typedef MUXDEF(CONFIG_ISA64, Elf64_Ehdr, Elf32_Ehdr) Ehdr;
 typedef MUXDEF(CONFIG_ISA64, Elf64_Shdr, Elf32_Shdr) Shdr;
 typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
@@ -150,7 +151,6 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
       fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
       ret = fscanf(fp, "%s", symname[i]);
       assert(ret == 1);
-      printf("%s\n", symname[i]);
     }
   }
 }
