@@ -106,7 +106,7 @@ static int parse_args(int argc, char *argv[]) {
 static void init_ftrace(const char *elf_file) {
   if(elf_file == NULL)
     return ;
-
+  printf("10\n");
 typedef MUXDEF(CONFIG_ISA64, Elf64_Ehdr, Elf32_Ehdr) Ehdr;
 typedef MUXDEF(CONFIG_ISA64, Elf64_Shdr, Elf32_Shdr) Shdr;
 typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
