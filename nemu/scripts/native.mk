@@ -23,12 +23,14 @@ compile_git:
 $(BINARY):: compile_git
 
 # Some convenient rules
-LOG_FOUND := $(filter --log, $(ARGS))
-
-ifndef LOG_FOUND
+ifdef ARGS
+LOG_FOUND := $(filter --log% -l%, $(ARGS))
+ifeq ($(LOG_FOUND),)
 ARGS += --log=$(BUILD_DIR)/nemu-log.txt
 endif
+endif
 
+override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
 
 # Command to execute NEMU
