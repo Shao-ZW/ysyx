@@ -133,6 +133,7 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
     else if(section_headers[i].sh_type == SHT_STRTAB)
       strtab_entry = &section_headers[i];
   }
+  printf("%d\n", symtab_entry->sh_offset);
   printf("%d\n", strtab_entry->sh_offset);
   // read symbol table
   int symbols_num = symtab_entry->sh_size / sizeof(Sym);
