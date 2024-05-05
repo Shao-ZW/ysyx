@@ -25,32 +25,6 @@
  */
 #define MAX_INST_TO_PRINT 10
 
-// struct {
-//   int start;
-//   int end;
-//   char buf[20][128];
-//   bool is_empty;
-// } iringbuffer;
-
-// void iringbuffer_init() {
-
-// }
-
-// void iringbuffer_write(const char* s) {
-//   iringbuffer.buf[iringbuffer.end] = ;
-//   if(!iringbuffer.is_empty && iringbuffer.end == iringbuffer.start)
-//     start = (start + 1) % 20;
-//   end = (end + 1) % 20;
-// }
-
-// void iringbuffer_display() {
-//   int idx = iringbuffer.start;
-//   do {
-//     printf("%s\n", iringbuffer.buf[idx]);
-//     idx = (idx + 1) % 20;
-//   } while(idx != iringbuffer.end);
-// }
-
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
@@ -58,6 +32,8 @@ static bool g_print_step = false;
 
 void device_update();
 void check_wp();
+void iringbuffer_write(const char*);
+void iringbuffer_display();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -97,6 +73,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
+  iringbuffer_write(p);
 #endif
 }
 
@@ -122,7 +99,7 @@ static void statistic() {
 
 void assert_fail_msg() {
   isa_reg_display();
-  //iringbuffer_display();
+  iringbuffer_display();
   statistic();
 }
 

@@ -16,7 +16,6 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <elf.h>
-#include <common.h>
 
 void init_rand();
 void init_log(const char *log_file);
@@ -25,6 +24,7 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
+void init_iringbuffer();
 
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
@@ -162,6 +162,9 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Read elf file for ftrace. */
   init_ftrace(elf_file);
+
+  /* Initialize iringbuffer. */
+  init_iringbuffer();
 
   /* Initialize memory. */
   init_mem();
