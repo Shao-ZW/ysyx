@@ -24,7 +24,7 @@ $(BINARY):: compile_git
 
 # Some convenient rules
 ifdef ARGS
-LOG_FOUND := $(filter --log% -l%, $(ARGS))
+LOG_FOUND := $(filter --log, $(ARGS))
 endif
 
 ifndef LOG_FOUND
