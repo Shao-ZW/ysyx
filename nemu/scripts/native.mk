@@ -24,9 +24,9 @@ $(BINARY):: compile_git
 
 # Some convenient rules
 ifdef ARGS
-LOG_FOUND := $(filter --elf%, $(ARGS))
-
+LOG_FOUND := $(filter --log%, $(ARGS))
 ifeq ($(LOG_FOUND),)
+fuck := fuck
 ARGS += --log=$(BUILD_DIR)/nemu-log.txt
 endif
 endif
@@ -41,7 +41,7 @@ NEMU_EXEC := $(BINARY) $(ARGS) $(IMG)
 run-env: $(BINARY) $(DIFF_REF_SO)
 
 run: run-env
-	echo $(LOG_FOUND)
+	echo $(fuck)
 	$(call git_commit, "run NEMU")
 	$(NEMU_EXEC)
 
