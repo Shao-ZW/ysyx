@@ -142,10 +142,12 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
   ret = fread(symtab, sizeof(Sym), symbols_num, fp);
 
   for(int i = 0; i < symbols_num; ++i) {
-    int name_offset = symtab[i].st_name;
-    fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
-    ret = fscanf(fp, "%s", symname[i]);
-    printf("%s\n", symname[i]);
+    if(symtab[i].st_info == STT_FUNC) {
+      int name_offset = symtab[i].st_name;
+      fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
+      ret = fscanf(fp, "%s", symname[i]);
+      printf("%s\n", symname[i]);
+    }
   }
 }
 
