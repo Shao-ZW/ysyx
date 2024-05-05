@@ -132,9 +132,10 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
       symtab_entry = &section_headers[i];
     else if(section_headers[i].sh_type == SHT_STRTAB)
       strtab_entry = &section_headers[i];
+    else if(symtab_entry && strtab_entry)
+      break;
   }
-  printf("%d\n", symtab_entry->sh_offset);
-  printf("%d\n", strtab_entry->sh_offset);
+
   // read symbol table
   int symbols_num = symtab_entry->sh_size / sizeof(Sym);
   Sym symtab[symbols_num];
@@ -146,6 +147,7 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
     int name_offset = symtab[i].st_name;
     fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
     ret = fscanf(fp, "%s", symname[i]);
+    printf("%s\n", symname[i]);
   }
 }
 
