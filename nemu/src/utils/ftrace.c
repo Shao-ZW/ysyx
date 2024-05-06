@@ -13,6 +13,7 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
 typedef struct {
     char func_name[MAX_FUNCNAME_LEN];
     vaddr_t func_addr;
+    int func_size;
 } func_info;
 
 typedef struct {
@@ -54,7 +55,7 @@ void init_ftrace(const char *elf_file) {
       strtab_entry = &section_headers[i];
   }
 
-  // read symbol table
+  // read symbol table and get function info
   int symbols_num = symtab_entry->sh_size / sizeof(Sym);
   Sym symtab[symbols_num];
   fseek(fp, symtab_entry->sh_offset, SEEK_SET);
@@ -67,6 +68,7 @@ void init_ftrace(const char *elf_file) {
       fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
       ret = fscanf(fp, "%s", funcs[func_cnt].func_name);
       assert(ret == 1);
+      //funcs[func_cnt].func_size = symtab[i];
       funcs[func_cnt++].func_addr = symtab[i].st_value;
     }
   }
@@ -75,6 +77,10 @@ void init_ftrace(const char *elf_file) {
 }
 
 void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
+    if(type == 0) {
+
+    }
+
     for(int i = 0; i < func_cnt; ++i) {
         if(funcs[i].func_addr == func_addr) {
             ftraces[ftrace_cnt].type = type;
@@ -90,12 +96,16 @@ void ftrace_display() {
     int space_cnt = 0;
 
     for(int i = 0; i < ftrace_cnt; ++i) {
-        if(ftraces[i].type == 0)    space_cnt--;
+        if(ftraces[i].type == 0) {
+
+        }
+        else {
+
+        }
         printf("%d ", space_cnt);
         // printf(FMT_WORD": %*s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, 
         // ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
         printf("%x: %s [%s@%x]\n", ftraces[i].inst_addr,
         (ftraces[i].type == 1) ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
-        if(ftraces[i].type == 1)    space_cnt++;
     }
 }
