@@ -68,7 +68,7 @@ void init_ftrace(const char *elf_file) {
       fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
       ret = fscanf(fp, "%s", funcs[func_cnt].func_name);
       assert(ret == 1);
-      //funcs[func_cnt].func_size = symtab[i];
+      funcs[func_cnt].func_size = symtab[i].st_size;
       funcs[func_cnt++].func_addr = symtab[i].st_value;
     }
   }
