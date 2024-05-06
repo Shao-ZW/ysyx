@@ -12,13 +12,13 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
 
 typedef struct {
     char func_name[MAX_FUNCNAME_LEN];
-    vaddr_t func_addr;
     int func_size;
+    vaddr_t func_addr;
 } func_info;
 
 typedef struct {
-    vaddr_t inst_addr;
     int type; // 1 call 0 ret
+    vaddr_t inst_addr;
     func_info* func;
 } ftrace_entry;
 
