@@ -104,11 +104,11 @@ void ftrace_display() {
     for(int i = 0; i < ftrace_cnt; ++i) {
         if(ftraces[i].type == 0) {
           space_cnt--;
-          printf(FMT_WORD": %*s %s [%s]\n", ftraces[i].inst_addr, space_cnt, "",
+          printf(FMT_WORD": %*s%s [%s]\n", ftraces[i].inst_addr, space_cnt, "",
           "ret", ftraces[i].func->func_name);
         }
         else {
-          printf(FMT_WORD": %*s %s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, "",
+          printf(FMT_WORD": %*s%s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, "",
           "call", ftraces[i].func->func_name, ftraces[i].func->func_addr);
           space_cnt++;
         }
