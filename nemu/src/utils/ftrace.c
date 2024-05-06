@@ -73,23 +73,26 @@ void init_ftrace(const char *elf_file) {
     }
   }
 
-  for(int i = 0; i < func_cnt; ++i) {
-    printf("%s %d\n", funcs[i].func_name, funcs[i].func_size);
-  }
   fclose(fp);
 }
 
 void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
-    if(type == 0) {
+    ftraces[ftrace_cnt].type = type;
+    ftraces[ftrace_cnt].inst_addr = inst_addr;
 
+    if(type == 0) {
+      for(int i = 0; i < func_cnt; ++i) {
+        if(funcs[i].func_addr <= inst_addr && funcs[i].func_addr + funcs[i].func_size > inst_addr) {
+          ftraces[ftrace_cnt++].func = &funcs[i];
+          break;
+        }
+      }
+      return;
     }
 
     for(int i = 0; i < func_cnt; ++i) {
         if(funcs[i].func_addr == func_addr) {
-            ftraces[ftrace_cnt].type = type;
-            ftraces[ftrace_cnt].inst_addr = inst_addr;
             ftraces[ftrace_cnt++].func = &funcs[i];
-            printf("%s %x\n", funcs[i].func_name, funcs[i].func_addr);
             break;
         }
     }
@@ -100,15 +103,14 @@ void ftrace_display() {
 
     for(int i = 0; i < ftrace_cnt; ++i) {
         if(ftraces[i].type == 0) {
-
+          printf(FMT_WORD": %*s [%s]\n", ftraces[i].inst_addr, space_cnt, 
+          "ret", ftraces[i].func->func_name);
         }
         else {
-
+          printf(FMT_WORD": %*s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, 
+          "call", ftraces[i].func->func_name, ftraces[i].func->func_addr);
         }
-        printf("%d ", space_cnt);
-        // printf(FMT_WORD": %*s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, 
-        // ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
-        printf("%x: %s [%s@%x]\n", ftraces[i].inst_addr,
-        (ftraces[i].type == 1) ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
+        // printf("%x: %s [%s@%x]\n", ftraces[i].inst_addr,
+        // (ftraces[i].type == 1) ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
     }
 }
