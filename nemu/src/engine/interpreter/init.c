@@ -27,6 +27,6 @@ void engine_start() {
 #endif
 
 #ifdef CONFIG_FTRACE
-  ftrace_display();
+  //ftrace_display();
 #endif
 }
