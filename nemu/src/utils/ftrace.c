@@ -108,7 +108,7 @@ void ftrace_display() {
           "ret", ftraces[i].func->func_name);
         }
         else {
-          printf(FMT_WORD": %*s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt,
+          printf(FMT_WORD": %*s %s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, "",
           "call", ftraces[i].func->func_name, ftraces[i].func->func_addr);
           space_cnt++;
         }
