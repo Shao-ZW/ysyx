@@ -73,6 +73,9 @@ void init_ftrace(const char *elf_file) {
     }
   }
 
+  for(int i = 0; i < func_cnt; ++i) {
+    printf("%s %d\n", funcs[i].func_name, funcs[i].func_size);
+  }
   fclose(fp);
 }
 
