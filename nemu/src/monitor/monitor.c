@@ -15,7 +15,6 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
-#include <elf.h>
 
 void init_rand();
 void init_log(const char *log_file);
@@ -25,6 +24,7 @@ void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
 void init_iringbuffer();
+void init_ftrace(const char *elf_file);
 
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
@@ -100,60 +100,6 @@ static int parse_args(int argc, char *argv[]) {
     }
   }
   return 0;
-}
-
-
-
-static void init_ftrace(const char *elf_file) {
-  if(elf_file == NULL)
-    return ;
-
-#define ELF_ST_TYPE(x) MUXDEF(CONFIG_ISA64, ELF64_ST_TYPE(x), ELF32_ST_TYPE(x))
-typedef MUXDEF(CONFIG_ISA64, Elf64_Ehdr, Elf32_Ehdr) Ehdr;
-typedef MUXDEF(CONFIG_ISA64, Elf64_Shdr, Elf32_Shdr) Shdr;
-typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
-
-  FILE *fp = fopen(elf_file, "rb");
-  Assert(fp, "Can not open '%s'", elf_file);
-
-  // read elf header
-  Ehdr elf_header;
-  int ret = fread(&elf_header, sizeof(Ehdr), 1, fp);
-  assert(ret == 1);
-  
-  // read section header
-  Shdr section_headers[elf_header.e_shnum];
-  fseek(fp, elf_header.e_shoff, SEEK_SET);
-  ret = fread(section_headers, sizeof(Shdr), elf_header.e_shnum, fp);
-  assert(ret == elf_header.e_shnum);
-
-  // find symbol table and string table
-  Shdr *symtab_entry = NULL;
-  Shdr *strtab_entry = NULL;
-  for(int i = 0; i < elf_header.e_shnum; ++i) {
-    if(section_headers[i].sh_type == SHT_SYMTAB) 
-      symtab_entry = &section_headers[i];
-    else if(strtab_entry == NULL && section_headers[i].sh_type == SHT_STRTAB)
-      strtab_entry = &section_headers[i];
-  }
-
-  // read symbol table
-  int symbols_num = symtab_entry->sh_size / sizeof(Sym);
-  Sym symtab[symbols_num];
-  char symname[symbols_num][100];
-  fseek(fp, symtab_entry->sh_offset, SEEK_SET);
-  ret = fread(symtab, sizeof(Sym), symbols_num, fp);
-  assert(ret == symbols_num);
-
-  for(int i = 0; i < symbols_num; ++i) {
-    if(ELF_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
-      int name_offset = symtab[i].st_name;
-      fseek(fp, strtab_entry->sh_offset + name_offset, SEEK_SET);
-      ret = fscanf(fp, "%s", symname[i]);
-      printf("%s %x\n", symname[i], symtab[i].st_value);
-      assert(ret == 1);
-    }
-  }
 }
 
 void init_monitor(int argc, char *argv[]) {
