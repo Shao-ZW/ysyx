@@ -93,7 +93,7 @@ void ftrace_display() {
         if(ftraces[i].type == 0)    space_cnt--;
         // printf(FMT_WORD": %*s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt * 2, 
         // ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
-        printf("%x: %*s [%s@%x]\n", ftraces[i].inst_addr, space_cnt * 2, 
+        printf("%x: %s [%s@%x]\n", ftraces[i].inst_addr,
         ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
         if(ftraces[i].type == 1)    space_cnt++;
     }
