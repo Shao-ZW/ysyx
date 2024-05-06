@@ -21,10 +21,10 @@ typedef struct {
     func_info* func;
 } ftrace_entry;
 
-int func_cnt;
-int ftrace_cnt;
-func_info funcs[MAX_FUNC_NUM];
-ftrace_entry ftraces[MAX_FTRACE_NUM];
+static int func_cnt = 0;
+static int ftrace_cnt = 0;
+static func_info funcs[MAX_FUNC_NUM];
+static ftrace_entry ftraces[MAX_FTRACE_NUM];
 
 void init_ftrace(const char *elf_file) {
   if(elf_file == NULL)
@@ -37,7 +37,7 @@ void init_ftrace(const char *elf_file) {
   Ehdr elf_header;
   int ret = fread(&elf_header, sizeof(Ehdr), 1, fp);
   assert(ret == 1);
-  
+
   // read section header
   Shdr section_headers[elf_header.e_shnum];
   fseek(fp, elf_header.e_shoff, SEEK_SET);
@@ -71,11 +71,27 @@ void init_ftrace(const char *elf_file) {
     }
   }
 
-  for(int i = 0; i < func_cnt; ++i) {
-    printf("%x %s \n", funcs[i].func_addr, funcs[i].func_name);
-  }
+  fclose(fp);
+}
+
+void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
+    for(int i = 0; i < func_cnt; ++i) {
+        if(funcs[i].func_addr == func_addr) {
+            ftraces[ftrace_cnt].type = type;
+            ftraces[ftrace_cnt].inst_addr = inst_addr;
+            ftraces[ftrace_cnt++].func = &funcs[i];
+            break;
+        }
+    }
 }
 
 void ftrace_display() {
-    
+    int space_cnt = -1;
+
+    for(int i = 0; i < ftrace_cnt; ++i) {
+        if(ftraces[i].type == 1)    space_cnt++;
+        else    space_cnt--;
+        printf(FMT_WORD": %*s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt * 2, 
+        ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
+    }
 }
