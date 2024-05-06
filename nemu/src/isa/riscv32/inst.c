@@ -65,7 +65,7 @@ static int decode_exec(Decode *s) {
   __VA_ARGS__ ; \
 }
   // MUXDEF(CONFIG_FTRACE, ftrace_add(1, s->dnpc, s->pc), );
-  // IFDEF(CONFIG_FTRACE, ftrace_add(1, s->dnpc, s->pc))
+  IFDEF(CONFIG_FTRACE, ftrace_add(1, s->dnpc, s->pc));
   INSTPAT_START();
   // RV32I
   INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
