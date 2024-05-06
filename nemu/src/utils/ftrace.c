@@ -77,6 +77,7 @@ void init_ftrace(const char *elf_file) {
 void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
     for(int i = 0; i < func_cnt; ++i) {
         if(funcs[i].func_addr == func_addr) {
+            printf("%s %x\n", funcs[i].func_name, funcs[i].func_addr);
             ftraces[ftrace_cnt].type = type;
             ftraces[ftrace_cnt].inst_addr = inst_addr;
             ftraces[ftrace_cnt++].func = &funcs[i];
