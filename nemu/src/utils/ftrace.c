@@ -1,8 +1,8 @@
 #include <isa.h>
 #include <elf.h>
 
-#define MAX_FTRACE_NUM   200
-#define MAX_FUNC_NUM     20
+#define MAX_FTRACE_NUM   1000
+#define MAX_FUNC_NUM     100
 #define MAX_FUNCNAME_LEN 20
 #define ELF_ST_TYPE(x) MUXDEF(CONFIG_ISA64, ELF64_ST_TYPE(x), ELF32_ST_TYPE(x))
 
@@ -77,11 +77,9 @@ void init_ftrace(const char *elf_file) {
 void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
     for(int i = 0; i < func_cnt; ++i) {
         if(funcs[i].func_addr == func_addr) {
-            
             ftraces[ftrace_cnt].type = type;
             ftraces[ftrace_cnt].inst_addr = inst_addr;
             ftraces[ftrace_cnt++].func = &funcs[i];
-            printf("%s %x\n", ftraces[ftrace_cnt - 1].func->func_name, ftraces[ftrace_cnt - 1].func->func_addr);
             break;
         }
     }
@@ -94,8 +92,8 @@ void ftrace_display() {
         if(ftraces[i].type == 0)    space_cnt--;
         // printf(FMT_WORD": %*s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt * 2, 
         // ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
-        // printf("%x: %s [%s@%x]\n", ftraces[i].inst_addr,
-        // ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
+        printf("%x: %s [%s@%x]\n", ftraces[i].inst_addr,
+        ftraces[i].type == 1 ? "call" : "ret", ftraces[i].func->func_name, ftraces[i].func->func_addr);
         if(ftraces[i].type == 1)    space_cnt++;
     }
 }
