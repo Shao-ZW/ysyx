@@ -78,6 +78,7 @@ void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
     for(int i = 0; i < func_cnt; ++i) {
         if(funcs[i].func_addr == func_addr) {
             ftraces[ftrace_cnt].type = type;
+            printf("%d\n", type);
             ftraces[ftrace_cnt].inst_addr = inst_addr;
             ftraces[ftrace_cnt++].func = &funcs[i];
             break;
