@@ -26,7 +26,5 @@ void engine_start() {
   sdb_mainloop();
 #endif
 
-#ifdef CONFIG_FTRACE
-  ftrace_display();
-#endif
+  IFDEF(CONFIG_FTRACE, ftrace_display());
 }
