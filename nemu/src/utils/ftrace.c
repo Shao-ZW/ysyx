@@ -16,7 +16,7 @@ typedef struct {
 } func_info;
 
 typedef struct {
-    int inst_addr;
+    vaddr_t inst_addr;
     int type; // 1 call 0 ret
     func_info* func;
 } ftrace_entry;
