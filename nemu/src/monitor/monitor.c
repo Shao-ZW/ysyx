@@ -115,7 +115,7 @@ void init_monitor(int argc, char *argv[]) {
   init_log(log_file);
 
   /* Read elf file for ftrace. */
-  IFDEF(CONFIG_DEVICE, init_ftrace(elf_file));
+  IFDEF(CONFIG_FTRACE, init_ftrace(elf_file));
 
   /* Initialize iringbuffer. */
   init_iringbuffer();
