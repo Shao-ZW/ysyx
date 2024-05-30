@@ -123,7 +123,16 @@ static int decode_exec(Decode *s) {
   return 0;
 }
 
+void iringbuffer_write(const char*);
+void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
+
+  char inst[64];
+  int ilen = s->snpc - s->pc;
+  disassemble(inst, sizeof(s->logbuf), s->pc, (uint8_t *)&s->isa.inst.val, ilen);
+  iringbuffer_write(s->logbuf);
+
   return decode_exec(s);
 }

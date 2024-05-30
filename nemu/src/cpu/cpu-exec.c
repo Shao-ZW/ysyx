@@ -32,7 +32,6 @@ static bool g_print_step = false;
 
 void device_update();
 void check_wp();
-void iringbuffer_write(const char*);
 void iringbuffer_display();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
@@ -73,7 +72,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
-  iringbuffer_write(s->logbuf);
 #endif
 }
 
