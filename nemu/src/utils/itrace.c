@@ -23,7 +23,7 @@ void iringbuffer_write(const char* s) {
 void iringbuffer_display() {
   int idx = iringbuffer.start;
   do {
-    printf("%s\n", iringbuffer.buf[idx]);
+    printf("%s", iringbuffer.buf[idx]);
     idx = (idx + 1) % 20;
   } while(idx != iringbuffer.end);
   printf("%s  <--\n", iringbuffer.buf[iringbuffer.end]);
