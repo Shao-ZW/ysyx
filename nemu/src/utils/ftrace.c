@@ -11,15 +11,15 @@ typedef MUXDEF(CONFIG_ISA64, Elf64_Shdr, Elf32_Shdr) Shdr;
 typedef MUXDEF(CONFIG_ISA64, Elf64_Sym, Elf32_Sym) Sym;
 
 typedef struct {
-    char func_name[MAX_FUNCNAME_LEN];
-    int func_size;
-    vaddr_t func_addr;
+  char func_name[MAX_FUNCNAME_LEN];
+  int func_size;
+  vaddr_t func_addr;
 } func_info;
 
 typedef struct {
-    int type; // 1 call 0 ret
-    vaddr_t inst_addr;
-    func_info* func;
+  int type; // 1 call 0 ret
+  vaddr_t inst_addr;
+  func_info* func;
 } ftrace_entry;
 
 static int func_cnt = 0;
@@ -77,39 +77,39 @@ void init_ftrace(const char *elf_file) {
 }
 
 void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
-    ftraces[ftrace_cnt].type = type;
-    ftraces[ftrace_cnt].inst_addr = inst_addr;
+  ftraces[ftrace_cnt].type = type;
+  ftraces[ftrace_cnt].inst_addr = inst_addr;
 
-    if(type == 0) {
-      for(int i = 0; i < func_cnt; ++i) {
-        if(funcs[i].func_addr <= inst_addr && funcs[i].func_addr + funcs[i].func_size > inst_addr) {
-          ftraces[ftrace_cnt++].func = &funcs[i];
-          break;
-        }
-      }
-      return;
-    }
-
+  if(type == 0) {
     for(int i = 0; i < func_cnt; ++i) {
-        if(funcs[i].func_addr == func_addr) {
-            ftraces[ftrace_cnt++].func = &funcs[i];
-            break;
-        }
+      if(funcs[i].func_addr <= inst_addr && funcs[i].func_addr + funcs[i].func_size > inst_addr) {
+        ftraces[ftrace_cnt++].func = &funcs[i];
+        break;
+      }
     }
+    return;
+  }
+
+  for(int i = 0; i < func_cnt; ++i) {
+    if(funcs[i].func_addr == func_addr) {
+      ftraces[ftrace_cnt++].func = &funcs[i];
+      break;
+    }
+  }
 }
 
 void ftrace_display() {
-    int space_cnt = 0;
-    for(int i = 0; i < ftrace_cnt; ++i) {
-        if(ftraces[i].type == 0) {
-          space_cnt--;
-          printf(FMT_WORD": %*s%s [%s]\n", ftraces[i].inst_addr, space_cnt, "",
-          "ret", ftraces[i].func->func_name);
-        }
-        else {
-          printf(FMT_WORD": %*s%s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, "",
-          "call", ftraces[i].func->func_name, ftraces[i].func->func_addr);
-          space_cnt++;
-        }
+  int space_cnt = 0;
+  for(int i = 0; i < ftrace_cnt; ++i) {
+    if(ftraces[i].type == 0) {
+      space_cnt--;
+      printf(FMT_WORD": %*s%s [%s]\n", ftraces[i].inst_addr, space_cnt, "",
+      "ret", ftraces[i].func->func_name);
     }
+    else {
+      printf(FMT_WORD": %*s%s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, "",
+      "call", ftraces[i].func->func_name, ftraces[i].func->func_addr);
+      space_cnt++;
+    }
+  }
 }

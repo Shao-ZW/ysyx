@@ -9,7 +9,7 @@ struct{
 } iringbuffer;
 
 void init_iringbuffer() {
-    iringbuffer.start = iringbuffer.end = 0;
+  iringbuffer.start = iringbuffer.end = 0;
 }
 
 void iringbuffer_write(const char* s) {

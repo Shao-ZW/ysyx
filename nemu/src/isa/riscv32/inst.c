@@ -122,6 +122,7 @@ static int decode_exec(Decode *s) {
 
   return 0;
 }
+
 void itrace(Decode *s);
 
 int isa_exec_once(Decode *s) {

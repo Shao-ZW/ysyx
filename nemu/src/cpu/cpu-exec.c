@@ -33,7 +33,6 @@ static bool g_print_step = false;
 void device_update();
 void check_wp();
 void iringbuffer_display();
-//void itrace(Decode *s);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -50,7 +49,9 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->snpc = pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
-  //IFDEF(CONFIG_ITRACE, itrace(s));
+  /* Move the itrace-related code into the isa_exec_once() function to 
+   * support tracing for erroneous instructions.(but only support riscv now!)
+   */ 
 }
 
 static void execute(uint64_t n) {
