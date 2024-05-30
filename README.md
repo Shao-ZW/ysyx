@@ -1,9 +1,6 @@
 # "一生一芯"工程项目
 
-这是"一生一芯"的工程项目. 通过运行
-```bash
-bash init.sh subproject-name
-```
-进行初始化, 具体请参考[实验讲义][lecture note].
+这是我的"一生一芯"工程仓库，记录riscv模拟器和处理器的诞生!
 
-[lecture note]: https://ysyx.oscc.cc/docs/
+欢迎参加["一生一芯"](https://ysyx.oscc.cc)喵，谢谢喵!
+
