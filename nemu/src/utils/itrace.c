@@ -29,7 +29,7 @@ void iringbuffer_display() {
         putchar('\n');
     }
     else {
-        printf("<--\n");
+        printf("  <--\n");
         break;
     }
   }
