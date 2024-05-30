@@ -22,16 +22,13 @@ void iringbuffer_write(const char* s) {
 
 void iringbuffer_display() {
   int idx = iringbuffer.start;
+
   while(1){
     printf("%s", iringbuffer.buf[idx]);
     idx = (idx + 1) % 20;
-    if(idx != iringbuffer.end) {
-        putchar('\n');
-    }
-    else {
-        printf("  <--\n");
-        break;
-    }
+
+    if(idx != iringbuffer.end) { putchar('\n'); }
+    else { printf("  <--\n"); break; }
   }
 }
 
