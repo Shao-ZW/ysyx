@@ -22,11 +22,17 @@ void iringbuffer_write(const char* s) {
 
 void iringbuffer_display() {
   int idx = iringbuffer.start;
-  do {
-    printf("--%s--\n", iringbuffer.buf[idx]);
+  while(1){
+    printf("%s", iringbuffer.buf[idx]);
     idx = (idx + 1) % 20;
-  } while(idx != iringbuffer.end);
-  printf("-->%s 10<--\n", iringbuffer.buf[iringbuffer.end]);
+    if(idx != iringbuffer.end) {
+        putchar('\n');
+    }
+    else {
+        printf("<--\n");
+        break;
+    }
+  }
 }
 
 void itrace(Decode *s) {
