@@ -8,6 +8,27 @@ struct{
   char buf[20][128];
 } iringbuffer;
 
+void init_iringbuffer() {
+    iringbuffer.start = iringbuffer.end = 0;
+}
+
+void iringbuffer_write(const char* s) {
+  strcpy(iringbuffer.buf[iringbuffer.end], s);
+  iringbuffer.end = (iringbuffer.end + 1) % 20;
+  if(iringbuffer.end == iringbuffer.start) {
+    iringbuffer.start = (iringbuffer.start + 1) % 20;
+  }
+}
+
+void iringbuffer_display() {
+  int idx = iringbuffer.start;
+  do {
+    printf("%s\n", iringbuffer.buf[idx]);
+    idx = (idx + 1) % 20;
+  } while(idx != iringbuffer.end);
+  printf("%s  <--\n", iringbuffer.buf[iringbuffer.end]);
+}
+
 void itrace(Decode *s) {
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
@@ -31,26 +52,7 @@ void itrace(Decode *s) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
-}
 
-void init_iringbuffer() {
-    iringbuffer.start = iringbuffer.end = 0;
-}
-
-void iringbuffer_write(const char* s) {
-  strcpy(iringbuffer.buf[iringbuffer.end], s);
-  iringbuffer.end = (iringbuffer.end + 1) % 20;
-  if(iringbuffer.end == iringbuffer.start) {
-    iringbuffer.start = (iringbuffer.start + 1) % 20;
-  }
-}
-
-void iringbuffer_display() {
-  int idx = iringbuffer.start;
-  do {
-    printf("%s\n", iringbuffer.buf[idx]);
-    idx = (idx + 1) % 20;
-  } while(idx != iringbuffer.end);
-  printf("%s  <--\n", iringbuffer.buf[iringbuffer.end]);
+  iringbuffer_write(s->logbuf);
 }
 
