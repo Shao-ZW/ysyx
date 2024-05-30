@@ -33,7 +33,7 @@ static bool g_print_step = false;
 void device_update();
 void check_wp();
 void iringbuffer_display();
-void itrace();
+void itrace(Decode *s);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -50,7 +50,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->snpc = pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
-  //IFDEF(CONFIG_ITRACE, itrace());
+  IFDEF(CONFIG_ITRACE, itrace(s));
 // #ifdef CONFIG_ITRACE
 //   char *p = s->logbuf;
 //   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
