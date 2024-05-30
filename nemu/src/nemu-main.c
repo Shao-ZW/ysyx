@@ -22,15 +22,18 @@ void expr_test();
 int is_exit_status_bad();
 
 int main(int argc, char *argv[]) {
+  /* Test expr. */
+#ifdef CONFIG_EXPRTEST
+  expr_test();
+  return 0;
+#endif
+
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
 #else
   init_monitor(argc, argv);
 #endif
-
-  /* Test expr. */
-  IFDEF(CONFIG_EXPRTEST, expr_test());
 
   /* Start engine. */
   engine_start();
