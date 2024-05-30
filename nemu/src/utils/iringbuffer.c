@@ -25,5 +25,5 @@ void iringbuffer_display() {
     printf("%s\n", iringbuffer.buf[idx]);
     idx = (idx + 1) % 20;
   } while(idx != iringbuffer.end);
-  printf("%s  <--\n", iringbuffer.buf[iringbuffer.end]);
+  //printf("%s  <--\n", iringbuffer.buf[iringbuffer.end]);
 }
