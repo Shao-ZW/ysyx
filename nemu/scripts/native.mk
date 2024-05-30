@@ -24,15 +24,6 @@ $(BINARY):: compile_git
 
 # Some convenient rules
 
-# add this part for define the ARGS but not add the log_file 
-# ifdef ARGS
-# LOG_FOUND := $(filter --log% -l%, $(ARGS))
-# ifeq ($(LOG_FOUND),)
-# override ARGS += --log=$(BUILD_DIR)/nemu-log.txt
-# endif
-# endif
-
-
 override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
 
