@@ -5,20 +5,18 @@ struct{
   int start;
   int end;
   char buf[20][128];
-  int is_empty;
 } iringbuffer;
 
 void init_iringbuffer() {
     iringbuffer.start = iringbuffer.end = 0;
-    iringbuffer.is_empty = 1;
 }
 
 void iringbuffer_write(const char* s) {
   strcpy(iringbuffer.buf[iringbuffer.end], s);
-  if(!iringbuffer.is_empty && iringbuffer.end == iringbuffer.start)
-    iringbuffer.start = (iringbuffer.start + 1) % 20;
   iringbuffer.end = (iringbuffer.end + 1) % 20;
-  iringbuffer.is_empty = 0;
+  if(iringbuffer.end == iringbuffer.start) {
+    iringbuffer.start = (iringbuffer.start + 1) % 20;
+  }
 }
 
 void iringbuffer_display() {
@@ -27,4 +25,5 @@ void iringbuffer_display() {
     printf("%s\n", iringbuffer.buf[idx]);
     idx = (idx + 1) % 20;
   } while(idx != iringbuffer.end);
+  printf("%s  <--\n", iringbuffer.buf[iringbuffer.end]);
 }
