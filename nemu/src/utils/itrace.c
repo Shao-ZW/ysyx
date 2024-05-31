@@ -6,7 +6,7 @@ struct{
   int start;
   int end;
   char buf[20][128];
-} iringbuffer = {0, 0};
+} iringbuffer = {0, 0, {{0}}};
 
 void iringbuffer_write(const char* s) {
   strcpy(iringbuffer.buf[iringbuffer.end], s);
