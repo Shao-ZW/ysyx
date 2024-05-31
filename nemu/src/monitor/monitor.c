@@ -156,7 +156,6 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Display welcome message. */
   welcome();
-  printf("this not am\n");
 }
 #else // CONFIG_TARGET_AM
 static long load_img() {
