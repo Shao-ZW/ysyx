@@ -1,3 +1,5 @@
+#ifdef CONFIG_FTRACE
+
 #include <isa.h>
 #include <elf.h>
 
@@ -114,3 +116,5 @@ void ftrace_display() {
     }
   }
 }
+
+#endif

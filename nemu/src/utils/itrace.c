@@ -1,16 +1,15 @@
+#ifdef CONFIG_FTRACE
+
 #include <string.h>
 #include <stdio.h>
 #include <cpu/decode.h>
 
 struct{
-  int start;
-  int end;
+  int start = 0;
+  int end = 0;
   char buf[20][128];
 } iringbuffer;
 
-void init_iringbuffer() {
-  iringbuffer.start = iringbuffer.end = 0;
-}
 
 void iringbuffer_write(const char* s) {
   strcpy(iringbuffer.buf[iringbuffer.end], s);
@@ -60,3 +59,4 @@ void itrace(Decode *s) {
   iringbuffer_write(s->logbuf);
 }
 
+#endif
