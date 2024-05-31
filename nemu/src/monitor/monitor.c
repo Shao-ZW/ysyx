@@ -168,6 +168,7 @@ static long load_img() {
 
 void am_init_monitor() {
   init_rand();
+  printf("this am\n");
   init_mem();
   init_isa();
   load_img();
