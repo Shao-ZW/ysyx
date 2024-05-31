@@ -20,17 +20,22 @@
 #define NR_GPR MUXDEF(CONFIG_RVE, 16, 32)
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-  // if(ref_r->pc != pc) {
-  //   printf("ref-pc  %x   dut-pc  %x\n", ref_r->pc, pc);
-  //   return false;
-  // }
-  printf("%x %x\n", ref_r->pc, pc);
+  bool flag = true;
+
+  if(ref_r->pc != pc)
+    flag = false; 
+
   for(int i = 0; i < NR_GPR; ++i)
     if(ref_r->gpr[check_reg_idx(i)] != gpr(i))
-      return false;
+      flag = false;
+  
+  if(!flag) {
+    printf("ref-pc: "FMT_PADDR"  dut-pc: "FMT_PADDR"\n", ref_r->pc, pc);
+    // for(int i = 0; i < NR_GPR; ++i)
+    //   printf("ref-pc: "FMT_PADDR"  dut-pc: "FMT_PADDR"\n", ref_r->pc, pc);
+  }
 
-
-  return true;
+  return flag;
 }
 
 void isa_difftest_attach() {
