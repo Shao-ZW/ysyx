@@ -20,14 +20,19 @@ char *strcpy(char *dst, const char *src) {
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
-  char *p = dst;
   size_t i = 0;
-  while(i < n && *src) {
-    *dst++ = *src++;
+
+  while(i < n && src[i] != '\0') {
+    dst[i] = src[i];
     i++;
   }
-  *dst = '\0';
-  return p;
+      
+  while(i < n) {
+    dst[i] = '\0';
+    i++;
+  }
+  
+  return dst;
 }
 
 char *strcat(char *dst, const char *src) {
