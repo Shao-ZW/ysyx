@@ -28,7 +28,7 @@ void isa_reg_display() {
     bool success = true;
     word_t val = isa_reg_str2val(regs[i], &success);
     assert(success);
-    printf("%-5s "FMT_WORD"   %u\n", regs[i], val, val);
+    printf("%-5s "FMT_WORD"  "FMT_UNSIGN"\n", regs[i], val, val);
   }
 }
 
