@@ -2,6 +2,7 @@
 #include <klib.h>
 #include <klib-macros.h>
 #include <stdarg.h>
+#include <limits.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
@@ -29,16 +30,24 @@ int sprintf(char *out, const char *fmt, ...) {
       switch((c = fmt[++fi])) {
         case 'd': {
           int arg = va_arg(args, int);
+          unsigned int abs_arg;
           int t = 0;
 
           if (arg < 0) {
             out[oi++] = '-';
-            arg = -arg;
+            // Handle INT_MIN explicitly
+            if (arg == INT_MIN) {
+                abs_arg = (unsigned int)(-(arg + 1)) + 1;
+            } else {
+                abs_arg = (unsigned int)(-arg);
+            }
+          } else {
+              abs_arg = (unsigned int)arg;
           }
-          
+
           do {
-            buf[t++] = arg % 10 + '0';
-            arg /= 10;
+            buf[t++] = abs_arg % 10 + '0';
+            abs_arg /= 10;
           } while(arg);
 
           while(t--) {
