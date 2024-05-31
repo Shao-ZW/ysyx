@@ -28,7 +28,7 @@ void isa_reg_display() {
     bool success = true;
     word_t val = isa_reg_str2val(regs[i], &success);
     assert(success);
-    printf("%-10s 0x%-10x %u\n", regs[i], val, val);
+    printf("%-10s "FMT_WORD" %u\n", regs[i], val, val);
   }
 }
 
