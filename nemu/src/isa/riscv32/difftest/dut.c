@@ -30,9 +30,9 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
       flag = false;
   
   if(!flag) {
-    printf("ref-pc: "FMT_PADDR"  dut-pc: "FMT_PADDR"\n", ref_r->pc, pc);
+    printf("dut-pc : "FMT_PADDR"  ref-pc : "FMT_PADDR"\n", pc, ref_r->pc);
     for(int i = 0; i < NR_GPR; ++i)
-      printf("ref-%-3s: "FMT_WORD"  dut-%-3s: "FMT_WORD"\n", reg_name(i), ref_r->gpr[i], reg_name(i), gpr(i));
+      printf("dut-%-3s: "FMT_WORD"  ref-%-3s: "FMT_WORD"\n", reg_name(i), gpr(i), reg_name(i), ref_r->gpr[i]);
   }
 
   return flag;
