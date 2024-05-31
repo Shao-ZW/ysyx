@@ -21,7 +21,7 @@ void iringbuffer_write(const char* s) {
 }
 
 void iringbuffer_display() {
-  printf(""ANSI_FMT("IRINGBUFFER", ANSI_FG_BLUE)":\n");
+  printf(""ANSI_FMT("IRINGBUFFER", ANSI_FG_YELLOW)":\n");
 
   int idx = iringbuffer.start;
   while(1){

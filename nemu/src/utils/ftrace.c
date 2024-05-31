@@ -99,7 +99,7 @@ void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
 
 void ftrace_display() {
   
-  printf(""ANSI_FMT("FTRACE", ANSI_FG_BLUE)":\n");
+  printf(""ANSI_FMT("FTRACE", ANSI_FG_YELLOW)":\n");
 
   int space_cnt = 0;
   for(int i = 0; i < ftrace_cnt; ++i) {
