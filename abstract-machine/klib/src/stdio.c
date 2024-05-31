@@ -35,10 +35,12 @@ int sprintf(char *out, const char *fmt, ...) {
             out[oi++] = '-';
             arg = -arg;
           }
-          while(arg) {
+          
+          do {
             buf[t++] = arg % 10 + '0';
             arg /= 10;
-          }
+          } while(arg);
+
           while(t--) {
             out[oi++] = buf[t];
           }
