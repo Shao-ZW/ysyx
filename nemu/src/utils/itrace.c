@@ -21,9 +21,9 @@ void iringbuffer_write(const char* s) {
 }
 
 void iringbuffer_display() {
-  int idx = iringbuffer.start;
+  printf(""ANSI_FMT("IRINGBUFFER", ANSI_FG_BLUE)":\n");
 
-  printf("IRINGBUFFER :\n");
+  int idx = iringbuffer.start;
   while(1){
     printf("%s", iringbuffer.buf[idx]);
     idx = (idx + 1) % 20;
