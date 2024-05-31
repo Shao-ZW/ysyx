@@ -24,7 +24,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   //   printf("ref-pc  %x   dut-pc  %x\n", ref_r->pc, pc);
   //   return false;
   // }
-  printf("%x\n", pc);
+  printf("%x %x\n", ref_r->pc, pc);
   for(int i = 0; i < NR_GPR; ++i)
     if(ref_r->gpr[check_reg_idx(i)] != gpr(i))
       return false;
