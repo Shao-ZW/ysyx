@@ -48,7 +48,7 @@ int sprintf(char *out, const char *fmt, ...) {
           do {
             buf[t++] = abs_arg % 10 + '0';
             abs_arg /= 10;
-          } while(arg);
+          } while(abs_arg);
 
           while(t--) {
             out[oi++] = buf[t];
