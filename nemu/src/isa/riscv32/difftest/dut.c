@@ -22,8 +22,8 @@
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   bool flag = true;
 
-  if(ref_r->pc != pc) {
-    printf("\ndut-pc : "FMT_PADDR"  ref-pc : "FMT_PADDR"\n\n", pc, ref_r->pc);
+  if(ref_r->pc != cpu.pc) {
+    printf("\ndut-pc : "FMT_PADDR"  ref-pc : "FMT_PADDR"\n", pc, ref_r->pc);
     flag = false; 
   }
     
