@@ -6,11 +6,7 @@ struct{
   int start;
   int end;
   char buf[20][128];
-} iringbuffer;
-
-void init_iringbuffer() {
-  iringbuffer.start = iringbuffer.end = 0;
-}
+} iringbuffer = {0, 0, {{0}}};
 
 void iringbuffer_write(const char* s) {
   strcpy(iringbuffer.buf[iringbuffer.end], s);
@@ -21,8 +17,9 @@ void iringbuffer_write(const char* s) {
 }
 
 void iringbuffer_display() {
-  int idx = iringbuffer.start;
+  printf(""ANSI_FMT("IRINGBUFFER", ANSI_FG_YELLOW)":\n");
 
+  int idx = iringbuffer.start;
   while(1){
     printf("%s", iringbuffer.buf[idx]);
     idx = (idx + 1) % 20;
@@ -33,6 +30,7 @@ void iringbuffer_display() {
 }
 
 void itrace(Decode *s) {
+#ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
   int ilen = s->snpc - s->pc;
@@ -57,5 +55,6 @@ void itrace(Decode *s) {
 #endif
 
   iringbuffer_write(s->logbuf);
+#endif
 }
 

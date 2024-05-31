@@ -122,9 +122,6 @@ void init_monitor(int argc, char *argv[]) {
   /* Read elf file for ftrace. */
   IFDEF(CONFIG_FTRACE, init_ftrace(elf_file));
 
-  /* Initialize iringbuffer. */
-  init_iringbuffer();
-
   /* Initialize memory. */
   init_mem();
 
