@@ -1,15 +1,16 @@
 #include <cstdio>
 
 void init_sim();
+void init_monitor(int argc, char *argv[]);
 void restart();
 void finish_sim();
 void exec();
 
 int main(int argc, char **argv) {
-  //printf("10\n");
+
   init_sim();
 
-  //init_monitor(argc, argv);
+  init_monitor(argc, argv);
 
   restart();
 

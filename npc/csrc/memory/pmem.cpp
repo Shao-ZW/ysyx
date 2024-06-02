@@ -1,16 +1,18 @@
 #include <cstdint>
-#include <stdio.h>
+#include <cstring>
 
 #define MEMORY_SIZE 4096
 #define paddr_t uint32_t
 
-uint8_t pmem[MEMORY_SIZE] = {
-  0x00, 0x00, 0x02, 0x97,  // auipc t0,0
-  0x00, 0x02, 0x88, 0x23,  // sb  zero,16(t0)
-  0x01, 0x02, 0xc5, 0x03,  // lbu a0,16(t0)
-  0x00, 0x10, 0x00, 0x73,  // ebreak (used as nemu_trap)
-  0xde, 0xad, 0xbe, 0xef,  // some data 
+static const uint32_t img [] = {
+  0x00000297,  // auipc t0,0
+  0x00028823,  // sb  zero,16(t0)
+  0x0102c503,  // lbu a0,16(t0)
+  0x00100073,  // ebreak (used as nemu_trap)
+  0xdeadbeef,  // some data 
 };  // built-in image
+
+uint8_t pmem[MEMORY_SIZE];
 
 #define CONFIG_MBASE 0x80000000
 
@@ -18,7 +20,7 @@ uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 
 extern "C" uint32_t pmem_read(uint32_t raddr) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回
-  printf("%x\n", (uint32_t*)guest_to_host(raddr & ~0x3u));
+
   return *(uint32_t*)guest_to_host(raddr & ~0x3u);
 }
 
@@ -38,10 +40,12 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
   
   // pmem[aligned_addr / 4] = current_data;
 }
+#define RESET_VECTOR 0x80000000
 
-// void init_mem() {
-//   IFDEF(CONFIG_MEM_RANDOM, memset(pmem, rand(), CONFIG_MSIZE));
-//   Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
-// }
+void init_mem() {
+  //IFDEF(CONFIG_MEM_RANDOM, memset(pmem, rand(), CONFIG_MSIZE));
+  memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
+  //Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
+}
 
 

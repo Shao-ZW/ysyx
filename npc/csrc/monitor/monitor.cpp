@@ -4,7 +4,7 @@
 // #include <sys/time.h>
 
 // void init_log(const char *log_file);
-// void init_mem();
+void init_mem();
 // void init_difftest(char *ref_so_file, long img_size, int port);
 // void init_sdb();
 // void init_disasm(const char *triple);
@@ -94,36 +94,36 @@
 //   srand(us);
 // }
 
-// void init_monitor(int argc, char *argv[]) {
-//   /* Perform some global initialization. */
+void init_monitor(int argc, char *argv[]) {
+  /* Perform some global initialization. */
 
-//   /* Parse arguments. */
-//   parse_args(argc, argv);
+  /* Parse arguments. */
+  //parse_args(argc, argv);
   
-//   /* Set random seed. */
-//   init_rand();
+  /* Set random seed. */
+  //init_rand();
 
-//   // /* Open the log file. */
-//   // init_log(log_file);
+  // /* Open the log file. */
+  // init_log(log_file);
 
-//   // /* Read elf file for ftrace. */
-//   // IFDEF(CONFIG_FTRACE, init_ftrace(elf_file));
+  // /* Read elf file for ftrace. */
+  // IFDEF(CONFIG_FTRACE, init_ftrace(elf_file));
 
-//   /* Initialize memory. */
-//   init_mem();
+  /* Initialize memory. */
+  init_mem();
 
-//   // /* Initialize devices. */
-//   // IFDEF(CONFIG_DEVICE, init_device());
+  // /* Initialize devices. */
+  // IFDEF(CONFIG_DEVICE, init_device());
 
-//   // /* Load the image to memory. This will overwrite the built-in image. */
-//   // long img_size = load_img();
+  // /* Load the image to memory. This will overwrite the built-in image. */
+  // long img_size = load_img();
 
-//   // /* Initialize differential testing. */
-//   // init_difftest(diff_so_file, img_size, difftest_port);
+  // /* Initialize differential testing. */
+  // init_difftest(diff_so_file, img_size, difftest_port);
 
-//   /* Initialize the simple debugger. */
-//   init_sdb();
+  /* Initialize the simple debugger. */
+  //init_sdb();
 
-//   /* Display welcome message. */
-//   welcome();
-// }
+  /* Display welcome message. */
+  //welcome();
+}
