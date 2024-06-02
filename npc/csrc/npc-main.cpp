@@ -6,7 +6,7 @@ void exec();
 
 int main(int argc, char **argv) {
   printf("10");
-  init_sim();
+  //init_sim();
 
   // //init_monitor(argc, argv);
 
