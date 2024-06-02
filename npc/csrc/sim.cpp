@@ -23,7 +23,7 @@ void init_sim() {
 
   Verilated::traceEverOn(true);
   top->trace(vcd.get(), 0);
-  //vcd->open("./build/wave.vcd");
+  vcd->open("../build/wave.vcd");
 }
 
 void finish_sim() {
