@@ -5,7 +5,8 @@ module IRAM (
 );
     always @(*) begin
         if (iram_en) begin 
-            inst = pmem_read(iram_addr);
+            //inst = pmem_read(iram_addr);
+            inst = 32'b0;
         end
         else begin
             inst = 32'b0;
