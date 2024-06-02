@@ -1,6 +1,6 @@
 TOPNAME = top
 VERILATOR = verilator
-VERILATOR_CFLAGS += --build -cc --exe -x-assign fast --trace #-Wall
+VERILATOR_CFLAGS += --build -cc --exe -x-assign fast --trace -Wall
 
 BUILD_DIR = $(abspath ./build)
 OBJ_DIR = $(BUILD_DIR)/obj_dir
