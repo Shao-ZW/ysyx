@@ -8,7 +8,7 @@ module IRAM(
             inst = pmem_read(iram_addr);
         end
         else begin
-            inst = 0;
+            inst = 32'b0;
         end
     end
 
