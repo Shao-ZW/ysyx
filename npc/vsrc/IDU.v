@@ -59,6 +59,9 @@ module IDU (
     wire inst_sra;
     wire inst_or;
     wire inst_and;
+    
+    wire inst_ebreak;
+
 
     assign opcode = inst[6:0];
     assign funct3 = inst[14:12];
@@ -111,6 +114,9 @@ module IDU (
     assign inst_sra   = R_type & (funct3 == 3'b101) & (funct7[5]);
     assign inst_or    = R_type & (funct3 == 3'b110);
     assign inst_and   = R_type & (funct3 == 3'b111);
+
+    assign inst_ebreak = inst == 32'b00000000000100000000000001110011;
+
 
     assign immI = {{20{inst[31]}}, inst[31:20]};
     assign immU = {inst[31:12], 12'b0};

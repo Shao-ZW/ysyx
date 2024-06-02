@@ -14,7 +14,7 @@ uint32_t pmem[MEMORY_SIZE] = {
 
 uint32_t guest_to_host(uint32_t addr) { return addr - CONFIG_MBASE; }
 
-extern "C" int pmem_read(int raddr) {
+extern "C" uint32_t pmem_read(uint32_t raddr) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回
   return pmem[guest_to_host((uint32_t)raddr) & ~0x3u];
 }
