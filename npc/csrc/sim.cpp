@@ -21,10 +21,9 @@ void init_sim() {
   top = std::make_unique<Vtop>(contextp.get());
   vcd = std::make_unique<VerilatedVcdC>();
 
-  // Verilated::traceEverOn(true);
-  // top->trace(vcd.get(), 0);
-  // vcd->open("./build/wave.vcd");
-  // printf("120");
+  Verilated::traceEverOn(true);
+  top->trace(vcd.get(), 0);
+  vcd->open("./build/wave.vcd");
 }
 
 void finish_sim() {
