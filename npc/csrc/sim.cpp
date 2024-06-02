@@ -4,6 +4,7 @@
 
 std::unique_ptr<Vtop> top;
 std::unique_ptr<VerilatedVcdC> vcd;
+std::unique_ptr<VerilatedContext> contextp;
 vluint64_t cur_time = 0;
 
 void eval(int clk, int rst = 0) {
@@ -15,7 +16,9 @@ void eval(int clk, int rst = 0) {
 }
 
 void init_sim() {
-  top = std::make_unique<Vtop>();
+  contextp = std::make_unique<VerilatedContext>();
+  //contextp->commandArgs(0, nullptr); // 可根据实际情况传递命令行参数
+  top = std::make_unique<Vtop>(contextp.get());
   vcd = std::make_unique<VerilatedVcdC>();
 
   // Verilated::traceEverOn(true);
