@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <stdio.h>
 
 #define MEMORY_SIZE 4096
 #define paddr_t uint32_t
@@ -17,6 +18,7 @@ uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 
 extern "C" uint32_t pmem_read(uint32_t raddr) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回
+  printf("%x\n", *(uint32_t*)guest_to_host(raddr & ~0x3u));
   return *(uint32_t*)guest_to_host(raddr & ~0x3u);
 }
 
