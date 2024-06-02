@@ -29,7 +29,7 @@ void init_sim() {
 
 void finish_sim() {
   //IFDEF(CONFIG_FTRACE, ftrace_display());
-  top->eval();
+  
   // top->final();
   // vcd->close();
 }
