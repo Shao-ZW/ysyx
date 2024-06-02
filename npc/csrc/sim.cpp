@@ -21,6 +21,7 @@ void init_sim() {
   Verilated::traceEverOn(true);
   top->trace(vcd.get(), 0);
   vcd->open("./build/wave.vcd");
+  printf("120");
 }
 
 void finish_sim() {
