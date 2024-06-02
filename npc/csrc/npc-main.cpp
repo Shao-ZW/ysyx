@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
   exec(); // ?
   printf("30\n");
   finish_sim();
-  
+  printf("40\n");
   return 0;
 }
 
