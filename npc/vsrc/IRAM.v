@@ -1,5 +1,3 @@
-import "DPI-C" function int pmem_read(input int raddr);
-
 module IRAM(
     input             iram_en,
     input      [31:0] iram_addr,

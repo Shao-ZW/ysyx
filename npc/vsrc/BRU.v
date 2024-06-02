@@ -1,5 +1,5 @@
 module BRU(
-    input  [7:0]  type,
+    input  [7:0]  jump_type,
     input  [31:0] src1, 
     input  [31:0] src2,
     input  [31:0] pc,
@@ -16,12 +16,13 @@ module BRU(
     wire inst_bltu;
     wire inst_bgeu;
 
-    wire [31:0] jalr_target
+    wire [31:0] jalr_target;
     wire [31:0] other_target;
 
     wire [31:0] adder_a;
     wire [31:0] adder_b;
     wire [31:0] adder_res;
+    wire [32:0] adder_tmp;
     wire        adder_cin;
     wire        adder_cout;
     
@@ -37,14 +38,14 @@ module BRU(
     wire bgeu;
 
 
-    assign inst_jal  = type[0];
-    assign inst_jalr = type[1];
-    assign inst_beq  = type[2];
-    assign inst_bne  = type[3];
-    assign inst_blt  = type[4];
-    assign inst_bge  = type[5];
-    assign inst_bltu = type[6];
-    assign inst_bgeu = type[7];
+    assign inst_jal  = jump_type[0];
+    assign inst_jalr = jump_type[1];
+    assign inst_beq  = jump_type[2];
+    assign inst_bne  = jump_type[3];
+    assign inst_blt  = jump_type[4];
+    assign inst_bge  = jump_type[5];
+    assign inst_bltu = jump_type[6];
+    assign inst_bgeu = jump_type[7];
 
     assign jalr_target  = src1 + imm;
     assign other_target = pc + imm;
@@ -52,7 +53,9 @@ module BRU(
     assign adder_a = src1;
     assign adder_b = ~src2;
     assign adder_cin = 1'b1;
-    assign (adder_cout, adder_res) = adder_a + adder_b + adder_cin;
+    assign adder_tmp = {1'b0, adder_a} + {1'b0, adder_b} + {32'b0, adder_cin};
+    assign adder_res = adder_tmp[31:0];
+    assign adder_cout = adder_tmp[32];
 
     assign altb  = (src1[31] & ~src2[31]) | ( ~(src1[31] ^ src2[31]) & adder_res[31]);
     assign altub = ~adder_cout;

@@ -12,10 +12,10 @@ module IDU(
     output        dram_wen
 );
 
-    wire [6:0] opcode,
-    wire [2:0] funct3,
-    wire [6:0] funct7,
-    wire [31:0] immI, immU, immS, immB, immJ, imm;
+    wire [6:0] opcode;
+    wire [2:0] funct3;
+    wire [6:0] funct7;
+    wire [31:0] immI, immU, immS, immB, immJ;
 
     wire R_type;
     wire I_type, I_type_load, I_type_jump, I_type_al;
@@ -24,6 +24,8 @@ module IDU(
     wire B_type;
     wire J_type;
 
+    wire inst_jal;
+    wire inst_jalr;
     wire inst_beq;
     wire inst_bne;
     wire inst_blt;
@@ -74,6 +76,8 @@ module IDU(
     assign B_type       = opcode == 7'b1100011;
     assign J_type       = opcode == 7'b1101111;
 
+    assign inst_jal   = J_type;
+    assign inst_jalr  = I_type_jump;
     assign inst_beq   = B_type & (funct3 == 3'b000);
     assign inst_bne   = B_type & (funct3 == 3'b001);
     assign inst_blt   = B_type & (funct3 == 3'b100);
@@ -114,7 +118,7 @@ module IDU(
     assign immB = {{19{inst[31]}}, inst[31], inst[7], inst[30:25], inst[11:8], 1'b0};
     assign immJ = {{11{inst[31]}}, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0};
 
-    mux5_32 u_mux5_32(
+    mux5_1 u_mux5_1(
         .in0(immI),
         .in1(immU),
         .in2(immS),
@@ -137,7 +141,7 @@ module IDU(
 
     assign jump_type = {inst_bgeu, inst_bltu, inst_bge, inst_blt, inst_bne, inst_beq, inst_jalr, inst_jal};
     
-    assign mem_type = {inst_lhu, inst_lbh, inst_lw, inst_lh, inst_lb, inst_sw, inst_sh, inst_sb};
+    assign mem_type = {inst_lhu, inst_lbu, inst_lw, inst_lh, inst_lb, inst_sw, inst_sh, inst_sb};
 
     assign sel_alu_src1[0] = I_type_load | S_type | I_type_al | R_type;
     assign sel_alu_src1[1] = U_type_auipc | J_type | I_type_jump;

@@ -1,6 +1,6 @@
 TOPNAME = top
 VERILATOR = verilator
-VERILATOR_CFLAGS += --build -cc --exe -x-assign fast -Wall --trace
+VERILATOR_CFLAGS += --build -cc --exe -x-assign fast --trace #-Wall
 
 BUILD_DIR = $(abspath ./build)
 OBJ_DIR = $(BUILD_DIR)/obj_dir
@@ -10,7 +10,7 @@ VCD_FILE = $(BUILD_DIR)/wave.vcd
 $(shell mkdir -p $(BUILD_DIR))
 
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
-CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
+CSRCS = $(shell find $(abspath ./csrc) -name "*.cc" -or -name "*.cpp")
 
 override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt
 

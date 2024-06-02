@@ -9,9 +9,9 @@ module DRAM_write_ctrl(
     wire inst_sh;
     wire inst_sw;
 
-    wire sb_mask;
-    wire sh_mask;
-    wire sw_mask;
+    wire [3:0] sb_mask;
+    wire [3:0] sh_mask;
+    wire [3:0] sw_mask;
 
     assign inst_sb = store_type[0];
     assign inst_sh = store_type[1];
@@ -23,7 +23,7 @@ module DRAM_write_ctrl(
 
     assign dram_wdata = wdata << {dram_waddr[1:0], 3'b0};
     
-    assign dram_wmask =  ({32{inst_sb}} & sb_mask)
-                       | ({32{inst_sh}} & sh_mask)
-                       | ({32{inst_sw}} & sw_mask); 
+    assign dram_wmask =  ({4{inst_sb}} & sb_mask)
+                       | ({4{inst_sh}} & sh_mask)
+                       | ({4{inst_sw}} & sw_mask); 
 endmodule

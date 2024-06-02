@@ -1,7 +1,7 @@
 module CPU(
     input         clk,
     input         rst,
-    input  [31:0] inst
+    input  [31:0] inst,
     input  [31:0] dram_rdata,
     output        iram_en,
     output [31:0] iram_addr,
@@ -38,7 +38,7 @@ module CPU(
     wire [31:0] load_data;
 
     // IF
-    assign iram_en = 1'b1;
+    assign iram_en   = ~rst;
     assign iram_addr = pc;
 
     mux2_1 #(.WIDTH(32)) mux_next_pc(
@@ -90,7 +90,7 @@ module CPU(
         .in1(pc),
         .in2(32'd0),
         .sel(sel_alu_src1),
-        .out(alu_src1),
+        .out(alu_src1)
     );
 
     mux3_1 #(.WIDTH(32)) mux_alu_src2(
@@ -98,20 +98,20 @@ module CPU(
         .in1(imm),
         .in2(32'd4),
         .sel(sel_alu_src2),
-        .out(alu_src2),
+        .out(alu_src2)
     );
 
     ALU u_ALU(
         .src1(alu_src1),
         .src2(alu_src2),
         .op(alu_op),
-        .alu_res(alu_res)
+        .res(alu_res)
     );
 
     BRU u_BRU(
         .src1(rf_rdata1),
         .src2(rf_rdata2),
-        .type(jump_type),
+        .jump_type(jump_type),
         .pc(pc),
         .imm(imm),
         .target(jump_target),
@@ -132,7 +132,7 @@ module CPU(
     DRAM_write_ctrl u_DRAM_write_ctrl(
         .wdata(rf_rdata2),
         .dram_waddr(dram_addr),
-        .store_eype(mem_type[2:0]),
+        .store_type(mem_type[2:0]),
         .dram_wmask(dram_wmask),
         .dram_wdata(dram_wdata)
     );

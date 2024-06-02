@@ -11,7 +11,7 @@ module top(
     wire [31:0] dram_rdata;
     wire [31:0] dram_addr;
     wire [31:0] dram_wdata;
-    wire [31:0] dram_wmask;
+    wire [3:0]  dram_wmask;
     
     CPU u_CPU(
         .clk(clk),

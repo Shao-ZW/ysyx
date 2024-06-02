@@ -48,11 +48,15 @@ module ALU(
     wire        adder_cin;
     wire [31:0] adder_res;
     wire        adder_cout;
+    wire [32:0] adder_tmp; // 临时变量用于存储加法结果，包括进位
 
     assign adder_a = src1;
     assign adder_b = (op_sub | op_slt | op_sltu) ? ~src2 : src2;
     assign adder_cin = (op_sub | op_slt | op_sltu) ? 1'b1 : 1'b0;
-    assign (adder_cout, adder_res) = adder_a + adder_b + adder_cin;
+    assign adder_tmp = {1'b0, adder_a} + {1'b0, adder_b} + {32'b0, adder_cin};
+
+    assign adder_res = adder_tmp[31:0];
+    assign adder_cout = adder_tmp[32];
 
     assign add_sub_res = adder_res;
 

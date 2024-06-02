@@ -23,7 +23,6 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
-void init_iringbuffer();
 void init_ftrace(const char *elf_file);
 
 static void welcome() {
