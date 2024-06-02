@@ -13,7 +13,6 @@ void eval(int clk, int rst = 0) {
   top->clk = clk;
   top->eval();
   vcd->dump(cur_time);
-  printf("%d", (int)cur_time);
   cur_time++;
 }
 
@@ -24,7 +23,7 @@ void init_sim() {
 
   Verilated::traceEverOn(true);
   top->trace(vcd, 0);
-  vcd->open("../build/wave.vcd");
+  vcd->open("./build/wave.vcd");
 }
 
 void finish_sim() {
