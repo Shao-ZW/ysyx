@@ -24,9 +24,6 @@ void init_sim() {
   Verilated::traceEverOn(true);
   top->trace(vcd, 0);
   vcd->open("./build/wave.vcd");
-
-  top->clk = 0;
-  top->rst = 0;
 }
 
 void finish_sim() {
@@ -37,12 +34,14 @@ void finish_sim() {
 }
 
 void restart() {
+  eval(0, 0);
+
   // Synchronous reset
   eval(1, 1);
   eval(0, 1);
 }
 
 void exec() {
-  eval(0);
   eval(1);
+  eval(0);
 }
