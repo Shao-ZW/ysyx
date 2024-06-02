@@ -38,7 +38,7 @@ module CPU(
     wire [31:0] load_data;
 
     // IF
-    assign iram_en   = ~rst;
+    assign iram_en   = 1'b1;
     assign iram_addr = pc;
 
     mux2_1 #(.WIDTH(32)) mux_next_pc(

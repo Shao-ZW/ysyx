@@ -24,7 +24,7 @@ void init_sim() {
 }
 
 void finish_sim() {
-  IFDEF(CONFIG_FTRACE, ftrace_display());
+  //IFDEF(CONFIG_FTRACE, ftrace_display());
   top->final();
   vcd->close();
 }
@@ -33,4 +33,9 @@ void restart() {
   // Synchronous reset
   eval(0, 1);
   eval(1, 1);
+}
+
+void exec() {
+  eval(0);
+  eval(1);
 }
