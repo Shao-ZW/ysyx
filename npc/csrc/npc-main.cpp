@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
 
   //init_monitor(argc, argv);
 
-  restart();
+  //restart();
 
   // //sdb_mainloop();
   // exec(); // ?
