@@ -1,6 +1,7 @@
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
 #include <verilated.h>
+#include <stdio.h>
 
 VerilatedContext* contextp = nullptr;
 VerilatedVcdC* vcd = nullptr;
@@ -12,6 +13,7 @@ void eval(int clk, int rst = 0) {
   top->clk = clk;
   top->eval();
   vcd->dump(cur_time);
+  printf("%d", (int)cur_time);
   cur_time++;
 }
 
