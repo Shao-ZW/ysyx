@@ -29,8 +29,9 @@ void init_sim() {
 
 void finish_sim() {
   //IFDEF(CONFIG_FTRACE, ftrace_display());
-  top->final();
-  vcd->close();
+  top->clk = 0;
+  // top->final();
+  // vcd->close();
 }
 
 void restart() {
