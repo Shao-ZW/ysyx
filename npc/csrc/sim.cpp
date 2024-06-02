@@ -2,9 +2,10 @@
 #include "Vtop.h"
 #include <verilated.h>
 
-std::unique_ptr<Vtop> top;
-std::unique_ptr<VerilatedVcdC> vcd;
-std::unique_ptr<VerilatedContext> contextp;
+
+VerilatedContext* contextp;
+VerilatedVcdC* vcd;
+Vtop* top;
 vluint64_t cur_time = 0;
 
 void eval(int clk, int rst = 0) {
@@ -16,13 +17,13 @@ void eval(int clk, int rst = 0) {
 }
 
 void init_sim() {
-  contextp = std::make_unique<VerilatedContext>();
+  contextp = new VerilatedContext;
   //contextp->commandArgs(0, nullptr); // 可根据实际情况传递命令行参数
-  top = std::make_unique<Vtop>(contextp.get());
-  vcd = std::make_unique<VerilatedVcdC>();
+  top = new Vtop{contextp};
+  vcd = new VerilatedVcdC;
 
   Verilated::traceEverOn(true);
-  top->trace(vcd.get(), 0);
+  top->trace(vcd, 0);
   vcd->open("../build/wave.vcd");
 }
 

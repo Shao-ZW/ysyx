@@ -12,12 +12,12 @@ int main(int argc, char **argv) {
   //init_monitor(argc, argv);
 
   restart();
-  //printf("20\n");
+
   // // //sdb_mainloop();
   exec(); // ?
-  printf("30\n");
+
   finish_sim();
-  printf("40\n");
+  
   return 0;
 }
 
