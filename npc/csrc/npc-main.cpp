@@ -6,16 +6,16 @@ void exec();
 
 int main(int argc, char **argv) {
   
-  init_sim();
+  // init_sim();
 
-  //init_monitor(argc, argv);
+  // //init_monitor(argc, argv);
 
-  //restart();
+  // //restart();
 
-  // //sdb_mainloop();
-  // exec(); // ?
+  // // //sdb_mainloop();
+  // // exec(); // ?
 
-  finish_sim();
+  // finish_sim();
   
   return 0;
 }
