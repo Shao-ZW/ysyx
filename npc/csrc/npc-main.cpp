@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
   //printf("20\n");
   // // //sdb_mainloop();
   exec(); // ?
-  //printf("30\n");
+  printf("30\n");
   finish_sim();
   
   return 0;
