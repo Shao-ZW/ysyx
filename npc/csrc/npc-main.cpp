@@ -8,9 +8,9 @@ int main(int argc, char **argv) {
   printf("10\n");
   init_sim();
 
-  // //init_monitor(argc, argv);
+  //init_monitor(argc, argv);
 
-  //restart();
+  restart();
 
   // // //sdb_mainloop();
   // // exec(); // ?
