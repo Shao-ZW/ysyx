@@ -34,9 +34,8 @@ void finish_sim() {
 }
 
 void restart() {
-  eval(0, 0);
-
   // Synchronous reset
+  eval(0, 1);
   eval(1, 1);
   eval(0, 1);
 }
