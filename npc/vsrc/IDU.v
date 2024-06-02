@@ -1,4 +1,4 @@
-module IDU(
+module IDU (
     input  [31:0] inst,
     output [31:0] imm,
     output [9:0]  alu_op,

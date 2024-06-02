@@ -2,7 +2,7 @@ import "DPI-C" function int pmem_read(input int raddr);
 import "DPI-C" function void pmem_write(
   input int waddr, input int wdata, input byte wmask);
 
-module DRAM(
+module DRAM (
     input             clk,
     input             dram_en,
     input             dram_wen,

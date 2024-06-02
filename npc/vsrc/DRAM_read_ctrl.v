@@ -1,4 +1,4 @@
-module DRAM_read_ctrl(
+module DRAM_read_ctrl (
     input  [31:0] dram_rdata,
     input  [31:0] dram_raddr,
     input  [4:0]  load_type,

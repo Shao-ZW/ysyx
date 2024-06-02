@@ -1,4 +1,4 @@
-module IRAM(
+module IRAM (
     input             iram_en,
     input      [31:0] iram_addr,
     output reg [31:0] inst

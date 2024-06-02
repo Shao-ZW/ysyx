@@ -1,4 +1,4 @@
-module DRAM_write_ctrl(
+module DRAM_write_ctrl (
     input  [31:0] wdata,
     input  [31:0] dram_waddr,
     input  [2:0]  store_type,

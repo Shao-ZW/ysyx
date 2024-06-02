@@ -1,4 +1,4 @@
-module CPU(
+module CPU (
     input         clk,
     input         rst,
     input  [31:0] inst,
@@ -41,11 +41,12 @@ module CPU(
     assign iram_en   = 1'b1;
     assign iram_addr = pc;
 
-    mux2_1 #(.WIDTH(32)) mux_next_pc(
-        .in0(pc + 32'd4),
-        .in1(jump_target),
-        .sel(jump_taken),
-        .out(next_pc)
+    GenPC u_GenPC(
+        .pc(pc),
+        .rst(rst),
+        .jump_target(jump_target),
+        .jump_taken(jump_taken),
+        .next_pc(next_pc)
     );
 
     PC u_PC(

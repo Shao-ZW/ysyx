@@ -1,4 +1,4 @@
-module BRU(
+module BRU (
     input  [7:0]  jump_type,
     input  [31:0] src1, 
     input  [31:0] src2,

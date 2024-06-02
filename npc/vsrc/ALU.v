@@ -1,4 +1,4 @@
-module ALU(
+module ALU (
     input  [9:0]  op,
     input  [31:0] src1,
     input  [31:0] src2,
