@@ -13,9 +13,9 @@ int main(int argc, char **argv) {
   restart();
 
   // // //sdb_mainloop();
-  // // exec(); // ?
+  exec(); // ?
 
-  // finish_sim();
+  finish_sim();
   
   return 0;
 }
