@@ -2,7 +2,6 @@
 #include "Vtop.h"
 #include <verilated.h>
 
-
 VerilatedContext* contextp;
 VerilatedVcdC* vcd;
 Vtop* top;
@@ -18,7 +17,6 @@ void eval(int clk, int rst = 0) {
 
 void init_sim() {
   contextp = new VerilatedContext;
-  //contextp->commandArgs(0, nullptr); // 可根据实际情况传递命令行参数
   top = new Vtop{contextp};
   vcd = new VerilatedVcdC;
 
