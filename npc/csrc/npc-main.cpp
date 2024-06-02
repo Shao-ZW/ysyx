@@ -14,10 +14,11 @@ int main(int argc, char **argv) {
   restart();
 
   // // //sdb_mainloop();
-  exec(); // ?
+  for(int i = 0; i < 20; ++i)
+    exec(); // ?
 
   finish_sim();
-  
+
   return 0;
 }
 

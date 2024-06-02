@@ -2,9 +2,9 @@
 #include "Vtop.h"
 #include <verilated.h>
 
-VerilatedContext* contextp;
-VerilatedVcdC* vcd;
-Vtop* top;
+VerilatedContext* contextp = nullptr;
+VerilatedVcdC* vcd = nullptr;
+Vtop* top = nullptr;
 vluint64_t cur_time = 0;
 
 void eval(int clk, int rst = 0) {
