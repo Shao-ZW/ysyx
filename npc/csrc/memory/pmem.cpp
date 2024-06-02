@@ -16,6 +16,7 @@ uint32_t guest_to_host(uint32_t addr) { return addr - CONFIG_MBASE; }
 
 extern "C" int pmem_read(int raddr) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回
+  return 0;
   return pmem[guest_to_host(raddr) & ~0x3u];
 }
 

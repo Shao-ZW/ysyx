@@ -4,7 +4,7 @@ module IRAM (
     output reg [31:0] inst
 );
     import "DPI-C" function int pmem_read(input int raddr);
-    
+
     always @(*) begin
         if (iram_en) begin 
             inst = pmem_read(iram_addr);
