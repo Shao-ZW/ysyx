@@ -37,10 +37,9 @@ void restart() {
   // Synchronous reset
   eval(0, 1);
   eval(1, 1);
-  eval(0, 1);
 }
 
 void exec() {
-  eval(1);
   eval(0);
+  eval(1);
 }
