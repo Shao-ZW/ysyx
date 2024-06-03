@@ -1,9 +1,11 @@
-// #include <cstdint>
-#include <cstring>
 #include "common.h"
+#include "memory/pmem.h"
 
 #define MEMORY_SIZE 4096
-#define paddr_t uint32_t
+#define CONFIG_MBASE 0x80000000
+#define RESET_VECTOR 0x80000000
+
+uint8_t pmem[MEMORY_SIZE];
 
 static const uint32_t img [] = {
   0x00000297,  // auipc t0,0
@@ -12,10 +14,6 @@ static const uint32_t img [] = {
   0x00100073,  // ebreak (used as nemu_trap)
   0xdeadbeef,  // some data 
 };  // built-in image
-
-uint8_t pmem[MEMORY_SIZE];
-
-#define CONFIG_MBASE 0x80000000
 
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 
@@ -41,8 +39,6 @@ extern "C" void pmem_write(paddr_t waddr, uint32_t wdata, char wmask) {
     p++;
   }
 }
-
-#define RESET_VECTOR 0x80000000
 
 void init_mem() {
   //IFDEF(CONFIG_MEM_RANDOM, memset(pmem, rand(), CONFIG_MSIZE));

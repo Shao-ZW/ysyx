@@ -1,8 +1,8 @@
 // // #include <cpu/cpu.h>
 // // #include <cpu/difftest.h>
 // // #include <locale.h>
-// #include <cstdint>
-// #include <utils.h>
+
+#include <utils.h>
 // /* The assembly code of instructions executed is only output to the screen
 //  * when the number of instructions executed is less than this value.
 //  * This is useful when you use the `si' command.
@@ -10,10 +10,10 @@
 //  */
 // #define MAX_INST_TO_PRINT 10
 
-// uint64_t g_nr_guest_inst = 0;
-// static uint64_t g_timer = 0; // unit: us
-// static bool g_print_step = false;
-// NPCState npc_state = { .state = NPC_STOP };
+uint64_t g_nr_guest_inst = 0;
+static uint64_t g_timer = 0; // unit: us
+static bool g_print_step = false;
+NPCState npc_state = { .state = NPC_STOP };
 
 // void device_update();
 // void check_wp();
@@ -45,21 +45,21 @@
 //   }
 // }
 
-// static void statistic() {
-// //   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
-// // #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
-// //   Log("host time spent = " NUMBERIC_FMT " us", g_timer);
-// //   Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
-// //   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
-// //   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
-// }
+static void statistic() {
+//   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
+// #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
+//   Log("host time spent = " NUMBERIC_FMT " us", g_timer);
+//   Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
+//   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
+//   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
+}
 
-// void assert_fail_msg() {
-//   //reg_display();
-//   // IFDEF(CONFIG_ITRACE, iringbuffer_display());
-//   // IFDEF(CONFIG_FTRACE, ftrace_display());
-//   statistic();
-// }
+void assert_fail_msg() {
+  //reg_display();
+  IFDEF(CONFIG_ITRACE, iringbuffer_display());
+  IFDEF(CONFIG_FTRACE, ftrace_display());
+  statistic();
+}
 
 // void cpu_exec(uint64_t n) {
 //   g_print_step = (n < MAX_INST_TO_PRINT);
