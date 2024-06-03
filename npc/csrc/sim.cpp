@@ -1,6 +1,6 @@
+#include <verilated.h>
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
-#include <verilated.h>
 
 VerilatedContext* contextp = nullptr;
 VerilatedVcdC* vcd = nullptr;

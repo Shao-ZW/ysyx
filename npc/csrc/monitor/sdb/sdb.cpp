@@ -3,7 +3,7 @@
 #include "common.h"
 
 static int is_batch_mode = false;
-extern NPCState npc_state;
+extern SIMState sim_state;
 
 void init_regex();
 void init_wp_pool();
@@ -36,9 +36,8 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-
 static int cmd_q(char *args) {
-  npc_state.state = NPC_QUIT;
+  sim_state.state = SIM_QUIT;
   return -1;
 }
 
@@ -116,8 +115,7 @@ static int cmd_info(char *args) {
   sscanf(args, "%c", &type);
 
   if(type == 'r') {
-    TODO();
-    //isa_reg_display();
+    isa_reg_display();
   } else if(type == 'w') {
     wp_display();
   } else {

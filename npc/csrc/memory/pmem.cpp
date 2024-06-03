@@ -1,10 +1,7 @@
 #include "common.h"
+#include "memory/pmem.h"
 
-#define MEMORY_SIZE 4096
-#define CONFIG_MBASE 0x80000000
-#define RESET_VECTOR 0x80000000
-
-uint8_t pmem[MEMORY_SIZE];
+static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 
 static const uint32_t img [] = {
   0x00000297,  // auipc t0,0
@@ -40,9 +37,9 @@ extern "C" void pmem_write(paddr_t waddr, uint32_t wdata, char wmask) {
 }
 
 void init_mem() {
-  //IFDEF(CONFIG_MEM_RANDOM, memset(pmem, rand(), CONFIG_MSIZE));
+  IFDEF(CONFIG_MEM_RANDOM, memset(pmem, rand(), CONFIG_MSIZE));
   memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
-  //Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
+  Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
 }
 
 long load_img(const char *img_file) {

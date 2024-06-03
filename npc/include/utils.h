@@ -20,13 +20,19 @@
 
 // ----------- state -----------
 
-enum { NPC_RUNNING, NPC_STOP, NPC_END, NPC_ABORT, NPC_QUIT };
+enum { SIM_RUNNING, SIM_STOP, SIM_END, SIM_ABORT, SIM_QUIT };
 
 typedef struct {
   int state;
   paddr_t halt_pc;
   uint32_t halt_ret;
-} NPCState;
+} SIMState;
+
+extern SIMState nemu_state;
+
+// ----------- timer -----------
+
+uint64_t get_time();
 
 
 // ----------- log -----------

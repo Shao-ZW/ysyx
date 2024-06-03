@@ -3,7 +3,7 @@
 #define NR_WP 32
 
 word_t expr(char *e, bool *success);
-extern NPCState npc_state;
+extern SIMState sim_state;
 
 typedef struct watchpoint {
   int NO;
@@ -86,5 +86,5 @@ void check_wp() {
   }
 
   if(flag) 
-    npc_state.state = NPC_STOP;
+    sim_state.state = SIM_STOP;
 }

@@ -78,8 +78,8 @@
 
 // static void checkregs(CPU_state *ref, vaddr_t pc) {
 //   if (!isa_difftest_checkregs(ref, pc)) {
-//     npc_state.state = NEMU_ABORT;
-//     npc_state.halt_pc = pc;
+//     sim_state.state = NEMU_ABORT;
+//     sim_state.halt_pc = pc;
 //     isa_reg_display();
 //   }
 // }

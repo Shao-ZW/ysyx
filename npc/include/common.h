@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "generated/autoconf.h"
 #include "macro.h"
 
 typedef MUXDEF(CONFIG_ISA64, uint64_t, uint32_t) word_t;

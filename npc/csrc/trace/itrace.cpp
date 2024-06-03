@@ -28,7 +28,7 @@ void iringbuffer_display() {
 }
 
 void itrace() {
-#ifdef CONFIG_ITRACE
+// #ifdef CONFIG_ITRACE
   char p[128];
   p += snprintf(p, sizeof(p), FMT_WORD ":", s->pc);
   int ilen = s->snpc - s->pc;
@@ -49,5 +49,5 @@ void itrace() {
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
   
   iringbuffer_write(s->logbuf);
-#endif
+// #endif
 }
