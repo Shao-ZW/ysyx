@@ -19,6 +19,7 @@ void device_update();
 void check_wp();
 void iringbuffer_display();
 void ftrace_display();
+void npc_eval(int clk, int rst = 0);
 
 static void trace_and_difftest() {
 #ifdef CONFIG_ITRACE_COND
@@ -31,9 +32,8 @@ static void trace_and_difftest() {
 }
 
 static void exec_once() {
-  TODO();
-  // eval(1);
-  // eval(0);
+  npc_eval(0);
+  npc_eval(1);
 }
 
 static void execute(uint64_t n) {
@@ -47,18 +47,18 @@ static void execute(uint64_t n) {
 }
 
 static void statistic() {
-//   IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
-// #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
-//   Log("host time spent = " NUMBERIC_FMT " us", g_timer);
-//   Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
-//   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
-//   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
+  IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
+#define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
+  Log("host time spent = " NUMBERIC_FMT " us", g_timer);
+  Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
+  if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
+  else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
 
 void assert_fail_msg() {
   //reg_display();
-  // IFDEF(CONFIG_ITRACE, iringbuffer_display());
-  // IFDEF(CONFIG_FTRACE, ftrace_display());
+  IFDEF(CONFIG_ITRACE, iringbuffer_display());
+  IFDEF(CONFIG_FTRACE, ftrace_display());
   statistic();
 }
 

@@ -51,4 +51,3 @@ void itrace() {
   iringbuffer_write(s->logbuf);
 #endif
 }
-

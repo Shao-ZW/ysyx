@@ -11,6 +11,7 @@ void add_wp(char*, word_t);
 void free_wp(int);
 void wp_display();
 word_t expr(char *e, bool *success);
+void cpu_exec(uint64_t n);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -93,15 +94,13 @@ static int cmd_help(char *args) {
 
 static int cmd_si(char *args) {
   if(args == NULL)
-    TODO();
-    //cpu_exec(1);
+    cpu_exec(1);
   else {
     int step;
     int t = sscanf(args, "%d", &step);
 
     if(t == 1)
-      TODO();
-      //cpu_exec(step);
+      cpu_exec(step);
     else 
       printf("Usage: si [N]\n");
   }
@@ -140,8 +139,7 @@ static int cmd_x(char *args) {
 
   if(t == 2) {
     bool success = true;
-    TODO();
-    //vaddr_t addr = expr(expression, &success);
+    vaddr_t addr = expr(expression, &success);
 
     if(success) {
       for(int i = 0; i < n; i++) {

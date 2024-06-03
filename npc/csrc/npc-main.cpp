@@ -1,18 +1,15 @@
 #include "common.h"
 
-void init_sim();
 void init_monitor(int argc, char *argv[]);
-void restart();
+void init_sim();
 void sdb_mainloop();
 void finish_sim();
 
 int main(int argc, char **argv) {
 
-  init_sim();
-
   init_monitor(argc, argv);
 
-  restart();
+  init_sim();
 
   sdb_mainloop();
 
@@ -20,4 +17,3 @@ int main(int argc, char **argv) {
 
   return 0;
 }
-
