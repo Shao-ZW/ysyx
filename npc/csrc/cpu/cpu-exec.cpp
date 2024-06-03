@@ -19,6 +19,7 @@ CPU_state cpu;
 
 void device_update();
 void check_wp();
+void itrace();
 void iringbuffer_display();
 void ftrace_display();
 void cpu_update();
@@ -38,6 +39,7 @@ static void exec_once() {
   npc_eval(0);
   npc_eval(1);
   cpu_update();
+  IFDEF(CONFIG_ITRACE, itrace());
 }
 
 static void execute(uint64_t n) {
