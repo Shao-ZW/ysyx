@@ -37,10 +37,10 @@ module top(
     //     .dram_rdata(dram_rdata)
     // );
 
-    // IRAM u_IRAM(
-    //     .iram_en(iram_en),
-    //     .iram_addr(iram_addr),
-    //     .inst(inst)
-    // );
+    IRAM u_IRAM(
+        .iram_en(iram_en),
+        .iram_addr(iram_addr),
+        .inst(inst)
+    );
 
 endmodule
