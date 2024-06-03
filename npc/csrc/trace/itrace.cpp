@@ -43,6 +43,7 @@ void itrace() {
   for (i = ilen - 1; i >= 0; i --) {
     p += snprintf(p, 4, " %02x", inst[i]);
   }
+  printf("%x\n", cpu.inst_val);
   int ilen_max = 4;
   int space_len = ilen_max - ilen;
   if (space_len < 0) space_len = 0;
