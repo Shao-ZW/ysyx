@@ -6,5 +6,5 @@ void mtrace_read(paddr_t addr) {
 }
 
 void mtrace_write(paddr_t addr) {
-    printf("memory write address : "FMT_WORD"\n", addr);
+    printf(ANSI_FMT("memory write address : "FMT_WORD"\n", ANSI_FG_YELLOW), addr);
 }
