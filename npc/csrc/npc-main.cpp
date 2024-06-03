@@ -2,6 +2,7 @@
 
 void init_sim();
 void init_monitor(int argc, char *argv[]);
+void sdb_mainloop();
 void restart();
 void finish_sim();
 void exec();
@@ -14,9 +15,9 @@ int main(int argc, char **argv) {
 
   restart();
 
-  //sdb_mainloop();
-  for(int i = 0; i < 20; ++i)
-    exec(); // ?
+  sdb_mainloop();
+  // for(int i = 0; i < 20; ++i)
+  //   exec(); // ?
 
   finish_sim();
 

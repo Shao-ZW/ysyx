@@ -1,7 +1,7 @@
-// #ifndef __CPU_DIFFTEST_H__
-// #define __CPU_DIFFTEST_H__
+#ifndef __CPU_DIFFTEST_H__
+#define __CPU_DIFFTEST_H__
 
-// #include "common.h"
+#include "common.h"
 
 // #ifdef CONFIG_DIFFTEST
 // void difftest_skip_ref();
@@ -34,4 +34,4 @@
 //   return true;
 // }
 
-// #endif
+#endif

@@ -1,5 +1,4 @@
 #include "common.h"
-#include "memory/pmem.h"
 
 #define MEMORY_SIZE 4096
 #define CONFIG_MBASE 0x80000000
