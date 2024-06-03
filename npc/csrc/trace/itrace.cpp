@@ -39,20 +39,18 @@ void itrace() {
   int ilen = 4;
   int i;
   uint8_t *inst = (uint8_t *)&cpu.inst_val;
-  printf("%x\n", cpu.inst_val);
   for (i = ilen - 1; i >= 0; i --) {
     p += snprintf(p, 4, " %02x", inst[i]);
   }
-  printf("%x\n", cpu.inst_val);
   int ilen_max = 4;
   int space_len = ilen_max - ilen;
   if (space_len < 0) space_len = 0;
   space_len = space_len * 3 + 1;
   memset(p, ' ', space_len);
   p += space_len;
-  printf("%x\n", cpu.inst_val);
+
   disassemble(p, cpu.logbuf + sizeof(cpu.logbuf) - p, cpu.pc, (uint8_t *)&cpu.inst_val, ilen);
-  printf("%x\n", cpu.inst_val);
+
   iringbuffer_write(cpu.logbuf);
 #endif
 }
