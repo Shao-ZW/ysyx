@@ -1,5 +1,6 @@
 #include <getopt.h>
 #include "common.h"
+#include "cpu/cpu.h"
 
 void init_rand();
 void init_log(const char *log_file);
@@ -8,7 +9,7 @@ void init_mem();
 void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
-
+extern "C" void init_disasm(const char *triple);
 long load_img(const char *img_file);
 void sdb_set_batch_mode();
 
@@ -96,6 +97,13 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize the simple debugger. */
   init_sdb();
 
+  IFDEF(CONFIG_ITRACE, init_disasm(
+    MUXDEF(CONFIG_ISA_riscv,
+      MUXDEF(CONFIG_RV64,      "riscv64",
+                               "riscv32"),
+                               "bad") "-pc-linux-gnu"
+  ));
+  
   /* Display welcome message. */
   welcome();
 }
