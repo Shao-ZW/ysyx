@@ -14,31 +14,32 @@ module CPU(
 
     wire [31:0] pc;
     wire [31:0] next_pc;
+    wire        rst_done;
 
     wire [31:0] rf_rdata1;
     wire [31:0] rf_rdata2;
     wire [31:0] rf_wdata;
 
     wire [31:0] imm;
-    wire [9:0] alu_op;
-    wire [2:0] sel_alu_src1; // 001 rf_rdata1 010 pc  100 0
-    wire [2:0] sel_alu_src2; // 001 rf_rdata2 010 imm 100 4
-    wire [7:0] jump_type;
-    wire [7:0] mem_type;
-    wire sel_rf_wdata;       // 0 alu_res 1 dram
-    wire rf_wen;
+    wire [9:0]  alu_op;
+    wire [2:0]  sel_alu_src1; // 001 rf_rdata1 010 pc  100 0
+    wire [2:0]  sel_alu_src2; // 001 rf_rdata2 010 imm 100 4
+    wire [7:0]  jump_type;
+    wire [7:0]  mem_type;
+    wire        sel_rf_wdata;       // 0 alu_res 1 dram
+    wire        rf_wen;
 
     wire [31:0] alu_src1;
     wire [31:0] alu_src2;
     wire [31:0] alu_res;
 
     wire [31:0] jump_target;
-    wire jump_taken;
+    wire        jump_taken;
 
     wire [31:0] load_data;
 
     // IF
-    assign iram_en   = ~rst;
+    assign iram_en   = rst_done;
     assign iram_addr = pc;
 
     mux2_1 #(.WIDTH(32)) mux_next_pc(
@@ -53,6 +54,7 @@ module CPU(
         .rst(rst),
         .wen(1'b1),
         .next_pc(next_pc),
+        .rst_done(rst_done),
         .pc(pc)
     );
 
