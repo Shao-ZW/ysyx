@@ -3,13 +3,14 @@
 #include "utils.h"
 #include "memory/pmem.h"
 
-// void init_log(const char *log_file);
+void init_log(const char *log_file);
 void init_mem();
 // void init_difftest(char *ref_so_file, long img_size, int port);
 // void init_sdb();
 // void init_disasm(const char *triple);
 // void init_ftrace(const char *elf_file);
 void sdb_set_batch_mode();
+long load_img(const char *img_file);
 
 static char *log_file = NULL;
 static char *elf_file = NULL;
@@ -31,28 +32,6 @@ static void welcome() {
   printf("Welcome to %s-NPC!\n", ANSI_FMT("riscv32e", ANSI_FG_YELLOW ANSI_BG_RED));
   printf("For help, type \"help\"\n");
 }
-
-// static long load_img() {
-//   if (img_file == NULL) {
-//     Log("No image is given. Use the default build-in image.");
-//     return 4096; // built-in image size
-//   }
-
-//   FILE *fp = fopen(img_file, "rb");
-//   Assert(fp, "Can not open '%s'", img_file);
-
-//   fseek(fp, 0, SEEK_END);
-//   long size = ftell(fp);
-
-//   Log("The image is %s, size = %ld", img_file, size);
-
-//   fseek(fp, 0, SEEK_SET);
-//   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
-//   assert(ret == 1);
-
-//   fclose(fp);
-//   return size;
-// }
 
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
@@ -103,22 +82,22 @@ void init_monitor(int argc, char *argv[]) {
   /* Set random seed. */
   //init_rand();
 
-  // /* Open the log file. */
-  //init_log(log_file);
+  /* Open the log file. */
+  init_log(log_file);
 
-  // /* Read elf file for ftrace. */
+  /* Read elf file for ftrace. */
   // IFDEF(CONFIG_FTRACE, init_ftrace(elf_file));
 
   /* Initialize memory. */
   init_mem();
 
-  // /* Initialize devices. */
+  /* Initialize devices. */
   // IFDEF(CONFIG_DEVICE, init_device());
 
-  // /* Load the image to memory. This will overwrite the built-in image. */
-  // long img_size = load_img();
+  /* Load the image to memory. This will overwrite the built-in image. */
+  long img_size = load_img(img_file);
 
-  // /* Initialize differential testing. */
+  /* Initialize differential testing. */
   // init_difftest(diff_so_file, img_size, difftest_port);
 
   /* Initialize the simple debugger. */
