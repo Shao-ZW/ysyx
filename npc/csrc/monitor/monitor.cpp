@@ -3,10 +3,11 @@
 
 void init_rand();
 void init_log(const char *log_file);
+void init_ftrace(const char *elf_file);
 void init_mem();
 void init_difftest(char *ref_so_file, long img_size, int port);
+void init_device();
 void init_sdb();
-void init_ftrace(const char *elf_file);
 
 long load_img(const char *img_file);
 void sdb_set_batch_mode();
@@ -84,7 +85,7 @@ void init_monitor(int argc, char *argv[]) {
   init_mem();
 
   /* Initialize devices. */
-  // IFDEF(CONFIG_DEVICE, init_device());
+  IFDEF(CONFIG_DEVICE, init_device());
 
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img(img_file);
