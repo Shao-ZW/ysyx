@@ -45,7 +45,6 @@ config TARGET_NATIVE_ELF
   bool "Executable on Linux Native"
 endchoice
 
-
 menu "Testing and Debugging"
 config WATCHPOINT
   bool "Enable watchpoint"

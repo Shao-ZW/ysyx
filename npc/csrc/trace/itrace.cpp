@@ -1,6 +1,8 @@
 #include "common.h"
 #include "cpu/cpu.h"
 
+extern CPU_state cpu;
+
 struct{
   int start;
   int end;
@@ -28,13 +30,15 @@ void iringbuffer_display() {
   }
 }
 
+extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+
 void itrace() {
 #ifdef CONFIG_ITRACE
-  char p[128];
-  p += snprintf(p, sizeof(p), FMT_WORD ":", s->pc);
-  int ilen = s->snpc - s->pc;
+  char *p = cpu.logbuf;
+  p += snprintf(p, sizeof(cpu.logbuf), FMT_WORD ":", cpu.pc);
+  int ilen = 4;
   int i;
-  uint8_t *inst = (uint8_t *)&s->isa.inst.val;
+  uint8_t *inst = (uint8_t *)&cpu.inst_val;
   for (i = ilen - 1; i >= 0; i --) {
     p += snprintf(p, 4, " %02x", inst[i]);
   }
@@ -45,10 +49,8 @@ void itrace() {
   memset(p, ' ', space_len);
   p += space_len;
 
-  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-  disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
-      MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
+  disassemble(p, cpu.logbuf + sizeof(cpu.logbuf) - p, cpu.pc, (uint8_t *)&cpu.inst_val, ilen);
   
-  iringbuffer_write(s->logbuf);
+  iringbuffer_write(cpu.logbuf);
 #endif
 }
