@@ -1,9 +1,7 @@
-// #include <isa.h>
-// #include <memory/paddr.h>
 #include <getopt.h>
 #include <sys/time.h>
-#include <stdio.h>
-#include <cstdlib>
+#include "utils.h"
+#include "memory/pmem.h"
 
 // void init_log(const char *log_file);
 void init_mem();
@@ -19,20 +17,20 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
 
-// static void welcome() {
-//   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
-//   #ifdef CONFIG_TRACE
-//   Log("ITrace: %s", MUXDEF(CONFIG_ITRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
-//   Log("MTrace: %s", MUXDEF(CONFIG_MTRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
-//   Log("FTrace: %s", MUXDEF(CONFIG_FTRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
-//   #endif
-//   IFDEF(CONFIG_TRACE, Log("If trace is enabled, a log file will be generated "
-//         "to record the trace. This may lead to a large log file. "
-//         "If it is not necessary, you can disable it in menuconfig"));
-//   Log("Build time: %s, %s", __TIME__, __DATE__);
-//   printf("Welcome to %s-NPC!\n", ANSI_FMT("riscv32e", ANSI_FG_YELLOW ANSI_BG_RED));
-//   printf("For help, type \"help\"\n");
-// }
+static void welcome() {
+  Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
+  #ifdef CONFIG_TRACE
+  Log("ITrace: %s", MUXDEF(CONFIG_ITRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
+  Log("MTrace: %s", MUXDEF(CONFIG_MTRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
+  Log("FTrace: %s", MUXDEF(CONFIG_FTRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
+  #endif
+  IFDEF(CONFIG_TRACE, Log("If trace is enabled, a log file will be generated "
+        "to record the trace. This may lead to a large log file. "
+        "If it is not necessary, you can disable it in menuconfig"));
+  Log("Build time: %s, %s", __TIME__, __DATE__);
+  printf("Welcome to %s-NPC!\n", ANSI_FMT("riscv32e", ANSI_FG_YELLOW ANSI_BG_RED));
+  printf("For help, type \"help\"\n");
+}
 
 // static long load_img() {
 //   if (img_file == NULL) {
@@ -127,5 +125,5 @@ void init_monitor(int argc, char *argv[]) {
   //init_sdb();
 
   /* Display welcome message. */
-  //welcome();
+  welcome();
 }
