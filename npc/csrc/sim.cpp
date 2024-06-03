@@ -3,20 +3,10 @@
 #include <verilated.h>
 #include <stdio.h>
 
-
-
 VerilatedContext* contextp = nullptr;
 VerilatedVcdC* vcd = nullptr;
 Vtop* top = nullptr;
 vluint64_t cur_time = 0;
-
-void eval(int clk, int rst = 0) {
-  top->rst = rst;
-  top->clk = clk;
-  top->eval();
-  vcd->dump(cur_time);
-  cur_time++;
-}
 
 void init_sim() {
   contextp = new VerilatedContext;
@@ -29,19 +19,26 @@ void init_sim() {
 }
 
 void finish_sim() {
-  //IFDEF(CONFIG_FTRACE, ftrace_display());
+  #ifdef CONFIG_FTRACE
+  void ftrace_display();
+  ftrace_display();
+  #endif
   
   top->final();
   vcd->close();
 }
 
-void restart() {
-  // Synchronous reset
-  eval(0, 1);
-  eval(1, 1);
+void npc_eval(int clk, int rst = 0) {
+  top->rst = rst;
+  top->clk = clk;
+  top->eval();
+  vcd->dump(cur_time);
+  cur_time++;
 }
 
-void exec() {
-  eval(0);
-  eval(1);
+void restart() {
+  /* Synchronous reset */
+  npc_eval(0, 1);
+  npc_eval(1, 1);
 }
+
