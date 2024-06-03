@@ -117,7 +117,7 @@ module IDU (
 
     assign inst_ebreak = inst == 32'b00000000000100000000000001110011;
 
-
+    
     assign immI = {{20{inst[31]}}, inst[31:20]};
     assign immU = {inst[31:12], 12'b0};
     assign immS = {{20{inst[31]}}, inst[31:25], inst[11:7]};

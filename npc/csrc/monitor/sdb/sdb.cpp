@@ -32,8 +32,7 @@ static char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-  TODO();
-  //cpu_exec(-1);
+  cpu_exec(-1);
   return 0;
 }
 
