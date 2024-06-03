@@ -1,5 +1,4 @@
 #include <getopt.h>
-#include <sys/time.h>
 #include "common.h"
 
 void init_log(const char *log_file);
@@ -63,13 +62,6 @@ static int parse_args(int argc, char *argv[]) {
   }
   return 0;
 }
-
-// static void init_rand() {
-//   struct timeval now;
-//   gettimeofday(&now, NULL);
-//   uint64_t us = now.tv_sec * 1000000 + now.tv_usec;
-//   srand(us);
-// }
 
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
