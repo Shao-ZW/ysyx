@@ -17,7 +17,6 @@
 #define __UTILS_H__
 
 #include "common.h"
-#include "memory/pmem.h"
 
 // ----------- state -----------
 

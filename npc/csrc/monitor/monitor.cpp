@@ -1,13 +1,11 @@
 #include <getopt.h>
 #include <sys/time.h>
-#include "utils.h"
-#include "memory/pmem.h"
+#include "common.h"
 
 void init_log(const char *log_file);
 void init_mem();
 // void init_difftest(char *ref_so_file, long img_size, int port);
-// void init_sdb();
-// void init_disasm(const char *triple);
+void init_sdb();
 // void init_ftrace(const char *elf_file);
 void sdb_set_batch_mode();
 long load_img(const char *img_file);
@@ -80,7 +78,7 @@ void init_monitor(int argc, char *argv[]) {
   parse_args(argc, argv);
   
   /* Set random seed. */
-  //init_rand();
+  // init_rand();
 
   /* Open the log file. */
   init_log(log_file);
@@ -101,7 +99,7 @@ void init_monitor(int argc, char *argv[]) {
   // init_difftest(diff_so_file, img_size, difftest_port);
 
   /* Initialize the simple debugger. */
-  //init_sdb();
+  init_sdb();
 
   /* Display welcome message. */
   welcome();

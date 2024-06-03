@@ -6,7 +6,7 @@
 
 static int is_batch_mode = false;
 
-// void init_regex();
+void init_regex();
 // void init_wp_pool();
 // void add_wp(char*, word_t);
 // void free_wp(int);
@@ -235,10 +235,10 @@ void sdb_set_batch_mode() {
 //   }
 // }
 
-// void init_sdb() {
-//   /* Compile the regular expressions. */
-//   init_regex();
+void init_sdb() {
+  /* Compile the regular expressions. */
+  init_regex();
 
-//   /* Initialize the watchpoint pool. */
-//   init_wp_pool();
-// }
+  /* Initialize the watchpoint pool. */
+  //init_wp_pool();
+}
