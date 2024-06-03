@@ -27,15 +27,15 @@ module top(
         .dram_wmask(dram_wmask)
     );
 
-    // DRAM u_DRAM(
-    //     .clk(clk),
-    //     .dram_en(dram_en),
-    //     .dram_wen(dram_wen),
-    //     .dram_addr(dram_addr),
-    //     .dram_wdata(dram_wdata),
-    //     .dram_wmask(dram_wmask),
-    //     .dram_rdata(dram_rdata)
-    // );
+    DRAM u_DRAM(
+        .clk(clk),
+        .dram_en(dram_en),
+        .dram_wen(dram_wen),
+        .dram_addr(dram_addr),
+        .dram_wdata(dram_wdata),
+        .dram_wmask(dram_wmask),
+        .dram_rdata(dram_rdata)
+    );
 
     IRAM u_IRAM(
         .iram_en(iram_en),
