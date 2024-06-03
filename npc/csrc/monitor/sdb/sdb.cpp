@@ -7,7 +7,7 @@
 static int is_batch_mode = false;
 
 void init_regex();
-// void init_wp_pool();
+void init_wp_pool();
 // void add_wp(char*, word_t);
 // void free_wp(int);
 // void wp_display();
@@ -240,5 +240,5 @@ void init_sdb() {
   init_regex();
 
   /* Initialize the watchpoint pool. */
-  //init_wp_pool();
+  init_wp_pool();
 }
