@@ -1,5 +1,6 @@
-#include <cstdint>
+// #include <cstdint>
 #include <cstring>
+#include "common.h"
 
 #define MEMORY_SIZE 4096
 #define paddr_t uint32_t

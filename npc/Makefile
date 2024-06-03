@@ -26,8 +26,7 @@ NPC_SIM := $(BIN) $(ARGS) $(IMG)
 $(BIN): $(VSRCS) $(CSRCS)
 	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-	-CFLAGS $(CFLAGS)\
-	--top-module $(TOPNAME) $^ \
+	--top-module $(TOPNAME) $^ -CFLAGS $(INCLUDES) \
 	--Mdir $(OBJ_DIR) -o $(abspath $(BIN))
 
 sim: $(BIN)
