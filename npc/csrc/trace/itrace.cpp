@@ -50,9 +50,9 @@ void itrace() {
   space_len = space_len * 3 + 1;
   memset(p, ' ', space_len);
   p += space_len;
-
+  printf("%x\n", cpu.inst_val);
   disassemble(p, cpu.logbuf + sizeof(cpu.logbuf) - p, cpu.pc, (uint8_t *)&cpu.inst_val, ilen);
-  
+  printf("%x\n", cpu.inst_val);
   iringbuffer_write(cpu.logbuf);
 #endif
 }
