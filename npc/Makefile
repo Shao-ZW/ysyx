@@ -15,7 +15,7 @@ $(shell mkdir -p $(BUILD_DIR))
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cc" -or -name "*.cpp")
 INCLUDES = $(addprefix -I, $(INC_PATH))
-CFLAGS  := -O2 -Wall -Werror $(INCLUDES) $(CFLAGS)
+CFLAGS  := -O2 $(INCLUDES) $(CFLAGS)
 
 override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt
 
