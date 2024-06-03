@@ -13,8 +13,8 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#ifndef __MEMORY_PADDR_H__
-#define __MEMORY_PADDR_H__
+#ifndef __MEMORY_PMEM_H__
+#define __MEMORY_PMEM_H__
 
 #include "common.h"
 
