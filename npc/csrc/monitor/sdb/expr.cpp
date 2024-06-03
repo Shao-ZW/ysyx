@@ -18,6 +18,7 @@
  */
 #include <regex.h>
 #include "common.h"
+#include "memory/pmem.h"
 
 #define IS_BIN_OPERATOR(type) (type == TK_AND || type == TK_EQ || type == TK_NEQ || type == '+' || type == '-' || type == '*' || type == '/')
 #define IS_SIG_OPERATOR(type) (type == TK_DEREF || type == TK_POS || type == TK_NEG)
@@ -147,11 +148,12 @@ static word_t str_to_num(char *str, bool *success) {
   return val;
 }
 
-static word_t access_reg(char *str, bool *success) {
-//   assert(str[0] == '$');
-//   word_t val = isa_reg_str2val(str + 1, success);
-//   return val;
-    TODO();
+word_t reg_str2val(const char *s);
+
+static word_t access_reg(char *str) {
+  assert(str[0] == '$');
+  word_t val = reg_str2val(str + 1);
+  return val;
 }
 
 /*
@@ -245,7 +247,7 @@ static word_t eval(int l, int r, bool *success) {
       *success = false;
       return 0;
     }
-    return (tokens[l].type == TK_REG ? access_reg(tokens[l].str, success) : str_to_num(tokens[l].str, success));
+    return (tokens[l].type == TK_REG ? access_reg(tokens[l].str) : str_to_num(tokens[l].str, success));
   }
   else if (check_parentheses(l, r)) {
     return eval(l + 1, r - 1, success);
@@ -261,8 +263,7 @@ static word_t eval(int l, int r, bool *success) {
         case TK_NEG: 
           return -val;
         case TK_DEREF:
-          TODO();
-          //return vaddr_read(val, 4);
+          return pmem_read(val);
         default: 
           assert(0);
       }

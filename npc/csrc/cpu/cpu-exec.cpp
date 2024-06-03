@@ -26,7 +26,7 @@ void npc_eval(int clk, int rst = 0);
 
 static void trace_and_difftest() {
 #ifdef CONFIG_ITRACE_COND
-  if (ITRACE_COND) { log_write("%s\n", cpu.logbuf); }
+  log_write("%s\n", cpu.logbuf);
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(cpu.logbuf)); }
   //IFDEF(CONFIG_DIFFTEST, difftest_step(cpu.pc, dnpc));

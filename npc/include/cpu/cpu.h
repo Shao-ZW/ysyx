@@ -11,5 +11,6 @@ typedef struct {
 } CPU_state;
 
 void reg_display();
+void cpu_exec(uint64_t n);
 
 #endif

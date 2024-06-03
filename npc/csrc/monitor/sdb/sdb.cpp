@@ -1,6 +1,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "common.h"
+#include "cpu/cpu.h"
+#include "memory/pmem.h"
 
 static int is_batch_mode = false;
 extern SIMState sim_state;
@@ -11,7 +13,6 @@ void add_wp(char*, word_t);
 void free_wp(int);
 void wp_display();
 word_t expr(char *e, bool *success);
-void cpu_exec(uint64_t n);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -115,7 +116,7 @@ static int cmd_info(char *args) {
   sscanf(args, "%c", &type);
 
   if(type == 'r') {
-    isa_reg_display();
+    reg_display();
   } else if(type == 'w') {
     wp_display();
   } else {
@@ -140,10 +141,9 @@ static int cmd_x(char *args) {
 
     if(success) {
       for(int i = 0; i < n; i++) {
-        TODO();
-        // word_t val = vaddr_read(addr, 4);
-        // printf("0x%08x: %08x\n", addr, val);
-        // addr += 4;
+        word_t val = pmem_read(addr);
+        printf("0x%08x: %08x\n", addr, val);
+        addr += 4;
       }
     }
     else 
