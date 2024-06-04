@@ -22,7 +22,6 @@
 #define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
 
-
 uint8_t* guest_to_host(paddr_t paddr);
 
 static inline bool in_pmem(paddr_t addr) {
@@ -38,8 +37,6 @@ uint32_t pmem_read(paddr_t raddr);
 #ifdef __cplusplus
 }
 #endif
-
-
 
 #endif
 
