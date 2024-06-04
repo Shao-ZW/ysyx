@@ -14,7 +14,7 @@ const char *regs[] = {
 };
 
 word_t reg_str2val(const char *s) {
-  for(int i = 0; i < GPR_NUM; ++i) {
+  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
     if(strcmp(regs[i], s) == 0) {
       return cpu.gpr[i];
     }
@@ -23,7 +23,7 @@ word_t reg_str2val(const char *s) {
 }
 
 void reg_display() {
-  for(int i = 0; i < GPR_NUM; ++i) {
+  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
     word_t val = reg_str2val(regs[i]);
     printf("%-5s " FMT_WORD "   " FMT_UNSIGN "\n", regs[i], val, val);
   }
@@ -31,7 +31,7 @@ void reg_display() {
 
 void cpu_update() {
   cpu.pc = top->rootp->top__DOT__u_CPU__DOT__u_PC__DOT__pc_reg;
-  for(int i = 0; i < GPR_NUM; ++i) {
+  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
     cpu.gpr[i] = top->rootp->top__DOT__u_CPU__DOT__u_regfile__DOT__reg_array[i];
   }
   cpu.inst_val = top->rootp->top__DOT__inst;

@@ -30,7 +30,7 @@ static void trace_and_difftest() {
   log_write("%s\n", cpu.logbuf);
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(cpu.logbuf)); }
-  //IFDEF(CONFIG_DIFFTEST, difftest_step(cpu.pc, dnpc));
+  IFDEF(CONFIG_DIFFTEST, difftest_step(cpu.pc, dnpc));
 
   IFDEF(CONFIG_WATCHPOINT, check_wp());
 }

@@ -7,6 +7,10 @@ endif
 -include $(NPC_HOME)/include/config/auto.conf
 -include $(NPC_HOME)/include/config/auto.conf.cmd
 
+remove_quote = $(patsubst "%",%,$(1))
+
+GUEST_ISA ?= $(call remove_quote,$(CONFIG_ISA))
+
 # Include rules for menuconfig
 include $(NPC_HOME)/scripts/config.mk
 
