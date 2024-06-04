@@ -16,12 +16,12 @@ $(shell mkdir -p $(BUILD_DIR))
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cc" -or -name "*.cpp")
 INCLUDES = $(addprefix -I, $(INC_PATH))
-LIBS = "-lreadline $(shell llvm-config --libs)"
+LIBS = -lreadline $(shell llvm-config --libs)
 
 $(BIN): $(VSRCS) $(CSRCS) 
 	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_CFLAGS) \
-	$^ -CFLAGS $(INCLUDES) -LDFLAGS $(LIBS) \
+	$^ -CFLAGS $(INCLUDES) -LDFLAGS "$(LIBS)" \
 	--top-module $(TOPNAME) \
 	--Mdir $(OBJ_DIR) -o $(abspath $(BIN))
 
