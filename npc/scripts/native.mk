@@ -2,7 +2,7 @@
 include $(NPC_HOME)/scripts/build.mk
 
 override ARGS ?= --log=$(BUILD_DIR)/npc-log.txt
-# override ARGS += $(ARGS_DIFF)
+override ARGS += $(ARGS_DIFF)
 
 # Command to execute NPC
 IMG ?=
