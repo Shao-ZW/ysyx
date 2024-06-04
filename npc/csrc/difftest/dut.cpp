@@ -1,19 +1,28 @@
 #include <dlfcn.h>
 
 #include "common.h"
+#include "utils.h"
 #include "cpu/cpu.h"
 #include "memory/pmem.h"
-#include "utils.h"
+#include "difftest/difftest.h"
 
-void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n, bool direction) = NULL;
-void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
-void (*ref_difftest_exec)(uint64_t n) = NULL;
-void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
+typedef void (*difftest_memcpy_t)(unsigned int, void*, unsigned long, bool);
+typedef void (*difftest_regcpy_t)(void*, bool);
+typedef void (*difftest_exec_t)(uint64_t);
+typedef void (*difftest_raise_intr_t)(uint64_t);
+typedef void (*difftest_init_t)(int);
+
+difftest_memcpy_t ref_difftest_memcpy = NULL;
+difftest_regcpy_t ref_difftest_regcpy = NULL;
+difftest_exec_t ref_difftest_exec = NULL;
+difftest_raise_intr_t ref_difftest_raise_intr = NULL;
+difftest_init_t ref_difftest_init = NULL;
 
 #ifdef CONFIG_DIFFTEST
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_inst = 0;
+extern CPU_state cpu;
 
 // this is used to let ref skip instructions which
 // can not produce consistent behavior with NEMU
@@ -50,19 +59,19 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   handle = dlopen(ref_so_file, RTLD_LAZY);
   assert(handle);
 
-  ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
+  ref_difftest_memcpy = (difftest_memcpy_t)dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
 
-  ref_difftest_regcpy = dlsym(handle, "difftest_regcpy");
+  ref_difftest_regcpy = (difftest_regcpy_t)dlsym(handle, "difftest_regcpy");
   assert(ref_difftest_regcpy);
 
-  ref_difftest_exec = dlsym(handle, "difftest_exec");
+  ref_difftest_exec = (difftest_exec_t)dlsym(handle, "difftest_exec");
   assert(ref_difftest_exec);
 
-  ref_difftest_raise_intr = dlsym(handle, "difftest_raise_intr");
+  ref_difftest_raise_intr = (difftest_raise_intr_t)dlsym(handle, "difftest_raise_intr");
   assert(ref_difftest_raise_intr);
 
-  void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
+  void (*ref_difftest_init)(int) = (difftest_init_t )dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
 
   Log("Differential testing: %s", ANSI_FMT("ON", ANSI_FG_GREEN));

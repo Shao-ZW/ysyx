@@ -30,7 +30,7 @@ static void trace_and_difftest() {
   log_write("%s\n", cpu.logbuf);
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(cpu.logbuf)); }
-  IFDEF(CONFIG_DIFFTEST, difftest_step(cpu.pc, dnpc));
+  IFDEF(CONFIG_DIFFTEST, difftest_step(cpu.pc, cpu.npc));
 
   IFDEF(CONFIG_WATCHPOINT, check_wp());
 }
@@ -39,7 +39,6 @@ static void exec_once() {
   npc_eval(0);
   npc_eval(1);
   cpu_update();
-  printf("%x %x\n", cpu.pc, cpu.npc);
   IFDEF(CONFIG_ITRACE, itrace());
 }
 
