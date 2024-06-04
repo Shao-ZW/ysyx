@@ -10,9 +10,10 @@ NPC_SIM := $(BIN) $(ARGS) $(IMG)
 
 sim: $(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	touch $(VCD_FILE)
 	$(NPC_SIM)
 
-vcd: sim
+vcd: $(VCD_FILE)
 	gtkwave $(VCD_FILE)
 
 clean:
