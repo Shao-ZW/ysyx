@@ -33,6 +33,7 @@ static void restart() {
   npc_eval(0, 1);
   npc_eval(1, 1);
   cpu_update();
+  printf("%x", cpu.pc);
 }
 
 void init_sim() {
