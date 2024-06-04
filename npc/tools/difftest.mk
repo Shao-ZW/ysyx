@@ -22,7 +22,7 @@ MKFLAGS = GUEST_ISA=$(GUEST_ISA) SHARE=1 ENGINE=interpreter
 $(DIFF_REF_SO):
 	$(MAKE) -s -C $(DIFF_REF_PATH) $(MKFLAGS)
 else
-DIFF_REF_SO = /home/build/$(GUEST_ISA)-nemu-interpreter-so
+DIFF_REF_SO = $(NEMU)/build/$(GUEST_ISA)-nemu-interpreter-so
 endif
 
 ARGS_DIFF = --diff=$(DIFF_REF_SO)
