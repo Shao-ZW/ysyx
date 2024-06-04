@@ -39,6 +39,7 @@ static void exec_once() {
   npc_eval(0);
   npc_eval(1);
   cpu_update();
+  printf("%x %x\n", cpu.pc, cpu.npc);
   IFDEF(CONFIG_ITRACE, itrace());
 }
 
