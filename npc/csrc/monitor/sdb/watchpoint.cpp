@@ -3,7 +3,6 @@
 #define NR_WP 32
 
 word_t expr(char *e, bool *success);
-extern SIMState sim_state;
 
 typedef struct watchpoint {
   int NO;

@@ -13,7 +13,14 @@ typedef struct {
   IFDEF(CONFIG_ITRACE, char logbuf[128]);
 } CPU_state;
 
+extern CPU_state cpu;
+
 void reg_display();
 void cpu_exec(uint64_t n);
+
+static inline const char* reg_name(int idx) {
+  extern const char* regs[];
+  return regs[idx];
+}
 
 #endif

@@ -2,6 +2,8 @@
 #include "difftest/difftest.h"
 #include "common.h"
 #include "cpu/cpu.h"
+#include "Vtop.h"
+#include "Vtop___024root.h"
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -22,7 +24,6 @@ void check_wp();
 void itrace();
 void iringbuffer_display();
 void ftrace_display();
-void cpu_update();
 void npc_eval(int clk, int rst = 0);
 
 static void trace_and_difftest() {
@@ -33,6 +34,17 @@ static void trace_and_difftest() {
   IFDEF(CONFIG_DIFFTEST, difftest_step(cpu.pc, cpu.npc));
 
   IFDEF(CONFIG_WATCHPOINT, check_wp());
+}
+
+static void cpu_update() {
+  extern Vtop* top;
+  cpu.pc  = top->rootp->top__DOT__u_CPU__DOT__u_PC__DOT__pc_reg;
+  cpu.npc = top->rootp->top__DOT__u_CPU__DOT__next_pc;
+
+  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
+    cpu.gpr[i] = top->rootp->top__DOT__u_CPU__DOT__u_regfile__DOT__reg_array[i];
+  }
+  cpu.inst_val = top->rootp->top__DOT__inst;
 }
 
 static void exec_once() {

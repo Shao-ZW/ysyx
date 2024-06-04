@@ -1,8 +1,6 @@
 #include "common.h"
 #include "cpu/cpu.h"
 
-extern CPU_state cpu;
-
 struct{
   int start;
   int end;

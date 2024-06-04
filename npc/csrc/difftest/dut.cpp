@@ -22,7 +22,6 @@ difftest_init_t ref_difftest_init = NULL;
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_inst = 0;
-extern CPU_state cpu;
 
 // this is used to let ref skip instructions which
 // can not produce consistent behavior with NEMU
@@ -85,40 +84,54 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 }
 
 static void checkregs(CPU_state *ref, vaddr_t pc) {
-  // if (!isa_difftest_checkregs(ref, pc)) {
-  //   sim_state.state = NEMU_ABORT;
-  //   sim_state.halt_pc = pc;
-  //   isa_reg_display();
-  // }
+  bool flag = true;
+
+  if(ref->pc != cpu.pc) {
+    printf("\ndut-pc : " FMT_PADDR "  ref-pc : " FMT_PADDR "\n", cpu.pc, ref->pc);
+    flag = false; 
+  }
+  
+  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
+    if(ref->gpr[i] != cpu.gpr[i]) {
+      printf("dut-%-3s: " FMT_WORD "  ref-%-3s: " FMT_WORD "\n", reg_name(i), cpu.gpr[i], reg_name(i), ref->gpr[i]);
+      flag = false;
+    }
+  }
+
+  if (!flag) {
+    sim_state.state = SIM_ABORT;
+    sim_state.halt_pc = pc;
+    reg_display();
+  }
 }
 
 void difftest_step(vaddr_t pc, vaddr_t npc) {
-  // CPU_state ref_r;
+  CPU_state ref_r;
 
-  // if (skip_dut_nr_inst > 0) {
-  //   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  //   if (ref_r.pc == npc) {
-  //     skip_dut_nr_inst = 0;
-  //     checkregs(&ref_r, npc);
-  //     return;
-  //   }
-  //   skip_dut_nr_inst --;
-  //   if (skip_dut_nr_inst == 0)
-  //     panic("can not catch up with ref.pc = " FMT_WORD " at pc = " FMT_WORD, ref_r.pc, pc);
-  //   return;
-  // }
+  if (skip_dut_nr_inst > 0) {
+    ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+    if (ref_r.pc == npc) {
+      skip_dut_nr_inst = 0;
+      checkregs(&ref_r, npc);
+      return;
+    }
+    skip_dut_nr_inst --;
+    if (skip_dut_nr_inst == 0)
+      panic("can not catch up with ref.pc = " FMT_WORD " at pc = " FMT_WORD, ref_r.pc, pc);
+    return;
+  }
 
-  // if (is_skip_ref) {
-  //   // to skip the checking of an instruction, just copy the reg state to reference design
-  //   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
-  //   is_skip_ref = false;
-  //   return;
-  // }
+  if (is_skip_ref) {
+    // to skip the checking of an instruction, just copy the reg state to reference design
+    ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+    is_skip_ref = false;
+    return;
+  }
 
-  // ref_difftest_exec(1);
-  // ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+  ref_difftest_exec(1);
+  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
-  // checkregs(&ref_r, pc);
+  checkregs(&ref_r, pc);
 }
 #else
 void init_difftest(char *ref_so_file, long img_size, int port) { }

@@ -28,7 +28,7 @@ typedef struct {
   uint32_t halt_ret;
 } SIMState;
 
-extern SIMState nemu_state;
+extern SIMState sim_state;
 
 // ----------- timer -----------
 

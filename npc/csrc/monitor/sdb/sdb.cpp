@@ -5,7 +5,6 @@
 #include "memory/pmem.h"
 
 static int is_batch_mode = false;
-extern SIMState sim_state;
 
 void init_regex();
 void init_wp_pool();

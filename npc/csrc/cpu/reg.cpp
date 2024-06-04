@@ -1,10 +1,5 @@
 #include "common.h"
 #include "cpu/cpu.h"
-#include "Vtop.h"
-#include "Vtop___024root.h"
-
-extern CPU_state cpu;
-extern Vtop* top;
 
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -29,12 +24,3 @@ void reg_display() {
   }
 }
 
-void cpu_update() {
-  cpu.pc  = top->rootp->top__DOT__u_CPU__DOT__u_PC__DOT__pc_reg;
-  cpu.npc = top->rootp->top__DOT__u_CPU__DOT__next_pc;
-
-  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
-    cpu.gpr[i] = top->rootp->top__DOT__u_CPU__DOT__u_regfile__DOT__reg_array[i];
-  }
-  cpu.inst_val = top->rootp->top__DOT__inst;
-}
