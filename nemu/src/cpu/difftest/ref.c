@@ -19,15 +19,15 @@
 #include <memory/paddr.h>
 
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
-  assert(0);
+  return ;
 }
 
 __EXPORT void difftest_regcpy(void *dut, bool direction) {
-  assert(0);
+  return;
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
-  assert(0);
+  return;
 }
 
 __EXPORT void difftest_raise_intr(word_t NO) {
