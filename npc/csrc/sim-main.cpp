@@ -7,9 +7,9 @@ void finish_sim();
 
 int main(int argc, char **argv) {
 
-  init_monitor(argc, argv);
-
   init_sim();
+
+  init_monitor(argc, argv);
 
   sdb_mainloop();
 
