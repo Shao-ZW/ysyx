@@ -12,7 +12,7 @@ sim: $(BIN)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	$(NPC_SIM)
 
-vcd: $(NPC_SIM)
+vcd: sim
 	gtkwave $(VCD_FILE)
 
 clean:
