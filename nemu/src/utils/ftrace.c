@@ -98,17 +98,17 @@ void ftrace_add(int type, vaddr_t func_addr, vaddr_t inst_addr) {
 }
 
 void ftrace_display() {
-  printf(""ANSI_FMT("FTRACE", ANSI_FG_YELLOW)":\n");
+  printf(ANSI_FMT("FTRACE", ANSI_FG_YELLOW)":\n");
 
   int space_cnt = 0;
   for(int i = 0; i < ftrace_cnt; ++i) {
     if(ftraces[i].type == 0) {
       space_cnt--;
-      printf(FMT_WORD": %*s%s [%s]\n", ftraces[i].inst_addr, space_cnt, "",
+      printf(FMT_WORD ": %*s%s [%s]\n", ftraces[i].inst_addr, space_cnt, "",
       "ret", ftraces[i].func->func_name);
     }
     else {
-      printf(FMT_WORD": %*s%s [%s@"FMT_WORD"]\n", ftraces[i].inst_addr, space_cnt, "",
+      printf(FMT_WORD ": %*s%s [%s@" FMT_WORD "]\n", ftraces[i].inst_addr, space_cnt, "",
       "call", ftraces[i].func->func_name, ftraces[i].func->func_addr);
       space_cnt++;
     }
