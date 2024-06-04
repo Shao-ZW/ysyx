@@ -35,6 +35,7 @@ __EXPORT void difftest_regcpy(void *dut, bool direction) {
     memcpy(ctx->gpr, cpu.gpr, sizeof(ctx->gpr));
   }
   else {
+    printf("%x\n", ctx->pc);
     cpu.pc = ctx->pc;
     memcpy(cpu.gpr, ctx->gpr, sizeof(ctx->gpr));
   }
