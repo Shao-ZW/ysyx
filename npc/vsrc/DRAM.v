@@ -11,7 +11,7 @@ module DRAM (
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
 
     always @(*) begin
-        if (dram_en & !dram_wen) begin 
+        if (dram_en) begin 
             dram_rdata = pmem_read(dram_addr);
         end
         else begin

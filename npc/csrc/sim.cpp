@@ -10,8 +10,7 @@ vluint64_t cur_time = 0;
 void npc_eval(int clk, int rst = 0) {
   top->rst = rst;
   top->clk = clk;
-  //if(clk != 0)  // should eval() but for the mtrace act normallly
-    top->eval();
+  top->eval();
   vcd->dump(cur_time);
   cur_time++;
 }
