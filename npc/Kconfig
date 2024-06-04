@@ -109,7 +109,7 @@ endchoice
 config DIFFTEST_REF_PATH
   string
   default "tools/spike-diff" if DIFFTEST_REF_SPIKE
-  default "tools/nemu-diff" if DIFFTEST_REF_NEMU
+  default "none" if DIFFTEST_REF_NEMU
   default "none"
 
 config DIFFTEST_REF_NAME

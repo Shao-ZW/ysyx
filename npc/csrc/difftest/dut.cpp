@@ -1,9 +1,9 @@
 #include <dlfcn.h>
 
+#include "common.h"
 #include "cpu/cpu.h"
 #include "memory/pmem.h"
 #include "utils.h"
-#include "difftest-def.h"
 
 void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n, bool direction) = NULL;
 void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;

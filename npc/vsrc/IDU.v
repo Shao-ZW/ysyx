@@ -117,10 +117,11 @@ module IDU (
 
     assign inst_ebreak = inst == 32'b00000000000100000000000001110011;
 
-    // import "DPI-C" function void npc_trap(input int inst_ebreak, input vaddr_t pc, input int halt_ret);
-    // always @(*) begin
-    //     npc_trap(inst_ebreak, );
-    // end
+    import "DPI-C" function void npc_trap();
+    always @(*) begin
+        if(inst_ebreak)
+            npc_trap();
+    end
 
     assign immI = {{20{inst[31]}}, inst[31:20]};
     assign immU = {inst[31:12], 12'b0};
