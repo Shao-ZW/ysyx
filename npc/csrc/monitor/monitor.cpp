@@ -1,6 +1,6 @@
 #include <getopt.h>
 #include "common.h"
-#include "cpu/cpu.h"
+#include "cpu.h"
 
 void init_rand();
 void init_log(const char *log_file);

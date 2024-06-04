@@ -1,5 +1,5 @@
 #include "common.h"
-#include "cpu/cpu.h"
+#include "cpu.h"
 
 struct{
   int start;

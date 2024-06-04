@@ -1,6 +1,9 @@
 #include <verilated.h>
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
+#include "Vtop___024root.h"
+#include "common.h"
+#include "cpu.h"
 
 VerilatedContext* contextp = nullptr;
 VerilatedVcdC* vcd = nullptr;
@@ -15,10 +18,21 @@ void npc_eval(int clk, int rst = 0) {
   cur_time++;
 }
 
+void cpu_update() {
+  cpu.pc  = top->rootp->top__DOT__u_CPU__DOT__u_PC__DOT__pc_reg;
+  cpu.npc = top->rootp->top__DOT__u_CPU__DOT__next_pc;
+
+  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
+    cpu.gpr[i] = top->rootp->top__DOT__u_CPU__DOT__u_regfile__DOT__reg_array[i];
+  }
+  cpu.inst_val = top->rootp->top__DOT__inst;
+}
+
 static void restart() {
   /* Synchronous reset */
   npc_eval(0, 1);
   npc_eval(1, 1);
+  cpu_update();
 }
 
 void init_sim() {
@@ -42,3 +56,4 @@ void finish_sim() {
   top->final();
   vcd->close();
 }
+

@@ -2,9 +2,9 @@
 
 #include "common.h"
 #include "utils.h"
-#include "cpu/cpu.h"
+#include "cpu.h"
 #include "memory/pmem.h"
-#include "difftest/difftest.h"
+#include "difftest.h"
 
 typedef void (*difftest_memcpy_t)(unsigned int, void*, unsigned long, bool);
 typedef void (*difftest_regcpy_t)(void*, bool);
@@ -127,7 +127,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
     is_skip_ref = false;
     return;
   }
-  
+
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 

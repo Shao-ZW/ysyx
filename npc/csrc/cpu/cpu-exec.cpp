@@ -1,9 +1,7 @@
 #include <locale.h>
-#include "difftest/difftest.h"
+#include "difftest.h"
 #include "common.h"
-#include "cpu/cpu.h"
-#include "Vtop.h"
-#include "Vtop___024root.h"
+#include "cpu.h"
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -20,6 +18,7 @@ SIMState sim_state = { .state = SIM_STOP };
 CPU_state cpu;
 
 void device_update();
+void cpu_update();
 void check_wp();
 void itrace();
 void iringbuffer_display();
@@ -34,17 +33,6 @@ static void trace_and_difftest() {
   IFDEF(CONFIG_DIFFTEST, difftest_step(cpu.pc, cpu.npc));
 
   IFDEF(CONFIG_WATCHPOINT, check_wp());
-}
-
-static void cpu_update() {
-  extern Vtop* top;
-  cpu.pc  = top->rootp->top__DOT__u_CPU__DOT__u_PC__DOT__pc_reg;
-  cpu.npc = top->rootp->top__DOT__u_CPU__DOT__next_pc;
-
-  for(int i = 0; i < RISCV_GPR_NUM; ++i) {
-    cpu.gpr[i] = top->rootp->top__DOT__u_CPU__DOT__u_regfile__DOT__reg_array[i];
-  }
-  cpu.inst_val = top->rootp->top__DOT__inst;
 }
 
 static void exec_once() {

@@ -1,7 +1,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "common.h"
-#include "cpu/cpu.h"
+#include "cpu.h"
 #include "memory/pmem.h"
 
 static int is_batch_mode = false;
