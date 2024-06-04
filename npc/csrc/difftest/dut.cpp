@@ -86,8 +86,8 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 static void checkregs(CPU_state *ref, vaddr_t pc) {
   bool flag = true;
 
-  if(ref->pc != cpu.pc) {
-    printf("\ndut-pc : " FMT_PADDR "  ref-pc : " FMT_PADDR "\n", cpu.pc, ref->pc);
+  if(ref->pc != cpu.npc) {
+    printf("\ndut-pc : " FMT_PADDR "  ref-pc : " FMT_PADDR "\n", cpu.npc, ref->pc);
     flag = false; 
   }
   
