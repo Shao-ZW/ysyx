@@ -17,7 +17,7 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.cc" -or -name "*.cpp")
 INCLUDES = $(addprefix -I, $(INC_PATH))
 CFLAGS  += $(INCLUDES)
 LIBS = -lreadline $(shell llvm-config --libs)
-LDFLAGS += LIBS
+LDFLAGS += $(LIBS)
 
 $(BIN): $(VSRCS) $(CSRCS) 
 	@rm -rf $(OBJ_DIR)
