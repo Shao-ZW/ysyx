@@ -7,8 +7,8 @@
 
 typedef struct {
   vaddr_t pc;
-  vaddr_t npc;
   word_t gpr[RISCV_GPR_NUM];
+  vaddr_t npc;
   word_t inst_val;
   IFDEF(CONFIG_ITRACE, char logbuf[128]);
 } CPU_state;
