@@ -58,16 +58,16 @@ module BRU (
     assign adder_res  = adder_tmp[31:0];
     assign adder_cout = adder_tmp[32];
 
-    assign lt   = (src1[31] & ~src2[31]) | ( ~(src1[31] ^ src2[31]) & adder_res[31]);
+    assign lt   = (src1[31] & ~src2[31]) | (~(src1[31] ^ src2[31]) & adder_res[31]);
     assign ltu  = ~adder_cout;
     assign zero = ~(| adder_res);
 
     assign beq  = zero;
     assign bne  = ~zero;
     assign blt  = lt;
-    assign bge  = ~lt & ~zero;
+    assign bge  = ~lt;
     assign bltu = ltu;
-    assign bgeu = ~ltu & ~zero;
+    assign bgeu = ~ltu;
 
     assign taken =  ((inst_jal | inst_jalr) & 1'b1)
                     | (inst_beq & beq)

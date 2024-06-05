@@ -48,31 +48,31 @@ module ALU (
     wire        adder_cin;
     wire [31:0] adder_res;
     wire        adder_cout;
-    wire [32:0] adder_tmp; // 临时变量用于存储加法结果，包括进位
+    wire [32:0] adder_tmp;
 
-    assign adder_a = src1;
-    assign adder_b = (op_sub | op_slt | op_sltu) ? ~src2 : src2;
+    assign adder_a   = src1;
+    assign adder_b   = (op_sub | op_slt | op_sltu) ? ~src2 : src2;
     assign adder_cin = (op_sub | op_slt | op_sltu) ? 1'b1 : 1'b0;
     assign adder_tmp = {1'b0, adder_a} + {1'b0, adder_b} + {32'b0, adder_cin};
 
-    assign adder_res = adder_tmp[31:0];
+    assign adder_res  = adder_tmp[31:0];
     assign adder_cout = adder_tmp[32];
 
     assign add_sub_res = adder_res;
 
     assign slt_res[31:1] = 31'b0;
-    assign slt_res[0] = (src1[31] & ~src2[31]) | ( ~(src1[31] ^ src2[31]) & adder_res[31]);
+    assign slt_res[0]    = (src1[31] & ~src2[31]) | (~(src1[31] ^ src2[31]) & adder_res[31]);
 
     assign sltu_res[31:1] = 31'b0;
-    assign sltu_res[0] = ~adder_cout;
+    assign sltu_res[0]    = ~adder_cout;
 
     assign res =  ({32{op_add | op_sub}} & add_sub_res)
-                | ({32{op_slt}} & slt_res)
+                | ({32{op_slt}}  & slt_res)
                 | ({32{op_sltu}} & sltu_res)
-                | ({32{op_and}} & and_res)
-                | ({32{op_or}} & or_res)
-                | ({32{op_xor}} & xor_res)
-                | ({32{op_sll}} & sll_res)
-                | ({32{op_srl}} & srl_res)
-                | ({32{op_sra}} & sra_res);
+                | ({32{op_and}}  & and_res)
+                | ({32{op_or}}   & or_res)
+                | ({32{op_xor}}  & xor_res)
+                | ({32{op_sll}}  & sll_res)
+                | ({32{op_srl}}  & srl_res)
+                | ({32{op_sra}}  & sra_res);
 endmodule
