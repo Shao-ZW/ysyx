@@ -97,7 +97,7 @@ static void checkregs(vaddr_t pc) {
       flag = false;
     }
   }
-  puts("ok");
+
   if (!flag) {
     sim_state.state = SIM_ABORT;
     sim_state.halt_pc = pc;
