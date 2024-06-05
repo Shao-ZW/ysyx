@@ -16,7 +16,7 @@ VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cc" -or -name "*.cpp")
 INCLUDES = $(addprefix -I, $(INC_PATH))
 CFLAGS  += $(INCLUDES)
-LIBS = -lreadline $(shell llvm-config --libs)
+LIBS += -lreadline $(shell llvm-config --libs)
 LDFLAGS += $(LIBS)
 
 $(BIN): $(VSRCS) $(CSRCS) 
