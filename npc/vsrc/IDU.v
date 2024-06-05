@@ -71,7 +71,7 @@ module IDU (
     assign I_type_load  = opcode == 7'b0000011;
     assign I_type_jump  = opcode == 7'b1100111;
     assign I_type_al    = opcode == 7'b0010011;
-    assign I_type       = I_type_load | I_type_load | I_type_al;
+    assign I_type       = I_type_load | I_type_jump | I_type_al;
     assign U_type_lui   = opcode == 7'b0110111;
     assign U_type_auipc = opcode == 7'b0010111;
     assign U_type       = U_type_lui | U_type_auipc;
