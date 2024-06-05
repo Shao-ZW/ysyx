@@ -1,10 +1,10 @@
 #include <locale.h>
 #include "difftest.h"
-#include "common.h"
 #include "cpu.h"
 #include "sim.h"
 #include "trace/itrace.h"
 #include "trace/ftrace.h"
+#include "common.h"
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.

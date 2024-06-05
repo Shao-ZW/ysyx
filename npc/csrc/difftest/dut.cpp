@@ -1,9 +1,9 @@
 #include <dlfcn.h>
-#include "common.h"
 #include "utils.h"
-#include "cpu.h"
 #include "memory/pmem.h"
 #include "difftest.h"
+#include "cpu.h"
+#include "common.h"
 
 typedef void (*difftest_memcpy_t)(unsigned int, void*, unsigned long, bool);
 typedef void (*difftest_regcpy_t)(void*, bool);
@@ -21,6 +21,7 @@ difftest_init_t ref_difftest_init = NULL;
 
 static bool is_skip_ref = false;
 static int skip_dut_nr_inst = 0;
+CPU_state ref;
 
 // this is used to let ref skip instructions which
 // can not produce consistent behavior with NEMU
@@ -82,17 +83,17 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
 }
 
-static void checkregs(CPU_state *ref, vaddr_t pc) {
+static void checkregs(vaddr_t pc) {
   bool flag = true;
 
-  if(ref->pc != cpu.npc) {
-    printf("\ndut-pc : " FMT_PADDR "  ref-pc : " FMT_PADDR "\n", cpu.npc, ref->pc);
+  if(ref.pc != cpu.pc) {
+    printf("\ndut-pc : " FMT_PADDR "  ref-pc : " FMT_PADDR "\n", cpu.pc, ref.pc);
     flag = false; 
   }
   
   for(int i = 0; i < RISCV_GPR_NUM; ++i) {
-    if(ref->gpr[i] != cpu.gpr[i]) {
-      printf("dut-%-3s: " FMT_WORD "  ref-%-3s: " FMT_WORD "\n", reg_name(i), cpu.gpr[i], reg_name(i), ref->gpr[i]);
+    if(ref.gpr[i] != cpu.gpr[i]) {
+      printf("dut-%-3s: " FMT_WORD "  ref-%-3s: " FMT_WORD "\n", reg_name(i), cpu.gpr[i], reg_name(i), ref.gpr[i]);
       flag = false;
     }
   }
@@ -105,18 +106,17 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
 }
 
 void difftest_step(vaddr_t pc, vaddr_t npc) {
-  CPU_state ref_r;
 
   if (skip_dut_nr_inst > 0) {
-    ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-    if (ref_r.pc == npc) {
+    ref_difftest_regcpy(&ref, DIFFTEST_TO_DUT);
+    if (ref.pc == npc) {
       skip_dut_nr_inst = 0;
-      checkregs(&ref_r, npc);
+      checkregs(npc);
       return;
     }
     skip_dut_nr_inst --;
     if (skip_dut_nr_inst == 0)
-      panic("can not catch up with ref.pc = " FMT_WORD " at pc = " FMT_WORD, ref_r.pc, pc);
+      panic("can not catch up with ref.pc = " FMT_WORD " at pc = " FMT_WORD, ref.pc, pc);
     return;
   }
 
@@ -127,10 +127,11 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
     return;
   }
 
-  ref_difftest_exec(1);
-  ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+  // changed for synchronous writes
+  ref_difftest_regcpy(&ref, DIFFTEST_TO_DUT);
+  checkregs(pc);
 
-  checkregs(&ref_r, pc);
+  ref_difftest_exec(1);
 }
 #else
 void init_difftest(char *ref_so_file, long img_size, int port) { }

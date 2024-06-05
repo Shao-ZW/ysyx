@@ -2,8 +2,8 @@
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
 #include "Vtop___024root.h"
-#include "common.h"
 #include "cpu.h"
+#include "common.h"
 
 VerilatedContext* contextp = nullptr;
 VerilatedVcdC* vcd = nullptr;

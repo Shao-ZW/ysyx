@@ -1,5 +1,5 @@
-#include "common.h"
 #include "memory/pmem.h"
+#include "common.h"
 
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 

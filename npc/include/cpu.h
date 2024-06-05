@@ -5,6 +5,8 @@
 #define RISCV_GPR_NUM  MUXDEF(CONFIG_RVE , 16, 32)
 #define DIFFTEST_REG_SIZE (sizeof(RISCV_GPR_TYPE) * (RISCV_GPR_NUM + 1)) // GPRs + pc
 
+#include "common.h"
+
 typedef struct {
   word_t gpr[RISCV_GPR_NUM];
   vaddr_t pc;

@@ -17,8 +17,8 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
-#include "common.h"
 #include "memory/pmem.h"
+#include "common.h"
 
 #define IS_BIN_OPERATOR(type) (type == TK_AND || type == TK_EQ || type == TK_NEQ || type == '+' || type == '-' || type == '*' || type == '/')
 #define IS_SIG_OPERATOR(type) (type == TK_DEREF || type == TK_POS || type == TK_NEG)
