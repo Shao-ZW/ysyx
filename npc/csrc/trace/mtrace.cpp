@@ -7,5 +7,5 @@ void mtrace_read(paddr_t addr, uint32_t rdata) {
 
 void mtrace_write(paddr_t addr, uint32_t wdata, char wmask) {
     printf(ANSI_FMT("memory waddr : " FMT_PADDR "  wdata : " 
-            FMT_WORD "  wmask : 0b%x\n", ANSI_FG_YELLOW), addr, wdata, wmask);
+            FMT_WORD "  wmask : %x\n", ANSI_FG_YELLOW), addr, wdata, wmask);
 }
