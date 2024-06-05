@@ -37,6 +37,7 @@ static void exec_once() {
   npc_eval(0);
   npc_eval(1);
   cpu_update();
+  puts("ok");
   IFDEF(CONFIG_ITRACE, itrace());
 }
 
