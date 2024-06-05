@@ -26,8 +26,8 @@ module BRU (
     wire        adder_cin;
     wire        adder_cout;
     
-    wire altb;
-    wire altub;
+    wire lt;
+    wire ltu;
     wire zero;
 
     wire beq;
@@ -50,23 +50,24 @@ module BRU (
     assign jalr_target  = src1 + imm;
     assign other_target = pc + imm;
     
-    assign adder_a = src1;
-    assign adder_b = ~src2;
+    assign adder_a   = src1;
+    assign adder_b   = ~src2;
     assign adder_cin = 1'b1;
-    assign adder_tmp = {1'b0, adder_a} + {1'b0, adder_b} + {32'b0, adder_cin};
-    assign adder_res = adder_tmp[31:0];
+
+    assign adder_tmp  = {1'b0, adder_a} + {1'b0, adder_b} + {32'b0, adder_cin};
+    assign adder_res  = adder_tmp[31:0];
     assign adder_cout = adder_tmp[32];
 
-    assign altb  = (src1[31] & ~src2[31]) | ( ~(src1[31] ^ src2[31]) & adder_res[31]);
-    assign altub = ~adder_cout;
-    assign zero  = ~(| adder_res);
+    assign lt   = (src1[31] & ~src2[31]) | ( ~(src1[31] ^ src2[31]) & adder_res[31]);
+    assign ltu  = ~adder_cout;
+    assign zero = ~(| adder_res);
 
     assign beq  = zero;
     assign bne  = ~zero;
-    assign blt  = altb;
-    assign bge  = ~altub;
-    assign bltu = altub;
-    assign bgeu = ~altb;
+    assign blt  = lt;
+    assign bge  = ~lt  & ~zero;
+    assign bltu = ltu  & ~zero;
+    assign bgeu = ~ltu & ~zero;
 
     assign taken =  ((inst_jal | inst_jalr) & 1'b1)
                     | (inst_beq & beq)
