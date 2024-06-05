@@ -9,4 +9,7 @@
 !*.cpp
 !.gitignore
 !README.md
+!*.drawio
+!*.h
+!Kconfig
 build/
