@@ -1,4 +1,5 @@
 #include "memory/pmem.h"
+#include "trace/mtrace.h"
 #include "common.h"
 
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
@@ -13,22 +14,18 @@ static const uint32_t img [] = {
 
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 
-void mtrace_read(paddr_t addr);
-void mtrace_write(paddr_t addr);
-
 extern "C" uint32_t pmem_read(paddr_t raddr) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回
-  IFDEF(CONFIG_MTRACE, mtrace_read(raddr));
-  IFDEF(CONFIG_MTRACE, printf("%x\n", (uint32_t)(*(uint32_t*)guest_to_host(raddr & ~0x3u))));
-  return *(uint32_t*)guest_to_host(raddr & ~0x3u);
+  uint32_t rdata = *(uint32_t*)guest_to_host(raddr & ~0x3u);
+  IFDEF(CONFIG_MTRACE, mtrace_read(raddr, rdata));
+  return rdata;
 }
 
 extern "C" void pmem_write(paddr_t waddr, uint32_t wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-  IFDEF(CONFIG_MTRACE, mtrace_write(waddr));
-  IFDEF(CONFIG_MTRACE, printf("%x %x\n", wdata, wmask));
+  IFDEF(CONFIG_MTRACE, mtrace_write(waddr, wdata, wmask));
   uint8_t* p = guest_to_host(waddr & ~0x3u);
 
   for (int i = 0; i < 4; i++) {
