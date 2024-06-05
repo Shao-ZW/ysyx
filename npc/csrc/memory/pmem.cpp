@@ -19,7 +19,7 @@ void mtrace_write(paddr_t addr);
 extern "C" uint32_t pmem_read(paddr_t raddr) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回
   IFDEF(CONFIG_MTRACE, mtrace_read(raddr));
-  IFDEF(CONFIG_MTRACE, printf("%x\n", *(uint32_t*)guest_to_host(raddr & ~0x3u)));
+  IFDEF(CONFIG_MTRACE, printf("%x\n", (uint32_t)(*(uint32_t*)guest_to_host(raddr & ~0x3u))));
   return *(uint32_t*)guest_to_host(raddr & ~0x3u);
 }
 
