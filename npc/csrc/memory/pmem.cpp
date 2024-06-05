@@ -30,7 +30,8 @@ extern "C" void pmem_write(paddr_t waddr, uint32_t wdata, char wmask) {
 
   for (int i = 0; i < 4; i++) {
     if (wmask & 1) {
-      *p = (uint8_t)(wdata & 0xFF); 
+      *p = (uint8_t)(wdata & 0xFF);
+      printf("%x ", *p);
     }
     wdata >>= 8;
     wmask <<= 1;
