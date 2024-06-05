@@ -36,6 +36,7 @@ extern "C" void pmem_write(paddr_t waddr, uint32_t wdata, char wmask) {
     wmask <<= 1;
     p++;
   }
+  printf("write res : %x\n", *(uint32_t*)guest_to_host(waddr & ~0x3u));
 }
 
 void init_mem() {
