@@ -17,8 +17,6 @@
 #include <cpu/difftest.h>
 #include "../local-include/reg.h"
 
-#define NR_GPR MUXDEF(CONFIG_RVE, 16, 32)
-
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   bool flag = true;
 
@@ -27,7 +25,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
     flag = false; 
   }
   
-  for(int i = 0; i < NR_GPR; ++i)
+  for(int i = 0; i < RISCV_GPR_NUM; ++i)
     if(ref_r->gpr[check_reg_idx(i)] != gpr(i)) {
       printf("dut-%-3s: " FMT_WORD "  ref-%-3s: " FMT_WORD "\n", reg_name(i), gpr(i), reg_name(i), ref_r->gpr[i]);
       flag = false;
