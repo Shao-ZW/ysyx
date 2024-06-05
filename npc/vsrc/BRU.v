@@ -65,8 +65,8 @@ module BRU (
     assign beq  = zero;
     assign bne  = ~zero;
     assign blt  = lt;
-    assign bge  = ~lt  & ~zero;
-    assign bltu = ltu  & ~zero;
+    assign bge  = ~lt & ~zero;
+    assign bltu = ltu;
     assign bgeu = ~ltu & ~zero;
 
     assign taken =  ((inst_jal | inst_jalr) & 1'b1)
