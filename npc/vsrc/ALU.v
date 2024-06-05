@@ -39,9 +39,9 @@ module ALU (
     assign and_res = src1 & src2;
     assign or_res  = src1 | src2;
     assign xor_res = src1 ^ src2;
-    assign sll_res = src2 << src1[4:0];
-    assign srl_res = src2 >> src1[4:0];
-    assign sra_res = ($signed(src2)) >>> src1[4:0];
+    assign sll_res = src1 << src2[4:0];
+    assign srl_res = src1 >> src2[4:0];
+    assign sra_res = ($signed(src1)) >>> src2[4:0];
     
     wire [31:0] adder_a;
     wire [31:0] adder_b;
