@@ -1,7 +1,7 @@
 #include "common.h"
 #include "cpu.h"
 
-struct{
+static struct{
   int start;
   int end;
   char buf[20][128];

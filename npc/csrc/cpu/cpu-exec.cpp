@@ -2,6 +2,9 @@
 #include "difftest.h"
 #include "common.h"
 #include "cpu.h"
+#include "sim.h"
+#include "trace/itrace.h"
+#include "trace/ftrace.h"
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -18,12 +21,7 @@ SIMState sim_state = { .state = SIM_STOP };
 CPU_state cpu;
 
 void device_update();
-void cpu_update();
 void check_wp();
-void itrace();
-void iringbuffer_display();
-void ftrace_display();
-void npc_eval(int clk, int rst = 0);
 
 static void trace_and_difftest() {
 #ifdef CONFIG_ITRACE_COND

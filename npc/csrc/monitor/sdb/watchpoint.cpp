@@ -7,7 +7,6 @@ word_t expr(char *e, bool *success);
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-
   int old_val;
   char expression[128];
 } WP;

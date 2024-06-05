@@ -1,5 +1,5 @@
 # Sanity check
-ifeq ($(wildcard $(NPC_HOME)/csrc/sim-main.cpp),)
+ifeq ($(wildcard $(NPC_HOME)/csrc/npc-main.cpp),)
   $(error NPC_HOME=$(NPC_HOME) is not a NPC repo)
 endif
 

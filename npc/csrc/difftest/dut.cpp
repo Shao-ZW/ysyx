@@ -1,5 +1,4 @@
 #include <dlfcn.h>
-
 #include "common.h"
 #include "utils.h"
 #include "cpu.h"

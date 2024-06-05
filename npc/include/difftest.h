@@ -1,5 +1,5 @@
-#ifndef __CPU_DIFFTEST_H__
-#define __CPU_DIFFTEST_H__
+#ifndef __DIFFTEST_H__
+#define __DIFFTEST_H__
 
 #include "common.h"
 
