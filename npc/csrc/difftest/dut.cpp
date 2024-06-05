@@ -85,7 +85,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 static void checkregs(vaddr_t pc) {
   bool flag = true;
-
+  
   if(ref.pc != cpu.pc) {
     printf("\ndut-pc : " FMT_PADDR "  ref-pc : " FMT_PADDR "\n", cpu.pc, ref.pc);
     flag = false; 
@@ -97,7 +97,7 @@ static void checkregs(vaddr_t pc) {
       flag = false;
     }
   }
-
+  puts("ok");
   if (!flag) {
     sim_state.state = SIM_ABORT;
     sim_state.halt_pc = pc;
@@ -106,7 +106,6 @@ static void checkregs(vaddr_t pc) {
 }
 
 void difftest_step(vaddr_t pc, vaddr_t npc) {
-
   if (skip_dut_nr_inst > 0) {
     ref_difftest_regcpy(&ref, DIFFTEST_TO_DUT);
     if (ref.pc == npc) {
