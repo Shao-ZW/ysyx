@@ -13,3 +13,5 @@
 !*.h
 !Kconfig
 build/
+include/config
+include/generated
