@@ -6,86 +6,236 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-int printf(const char *fmt, ...) {
-  panic("Not implemented");
-}
+int print_num(int base, unsigned int num, bool sign) {
+  static const char digits[] = "0123456789abcdef";
+  char buf[15];
+  int idx = 0;
 
-int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
-}
-
-int sprintf(char *out, const char *fmt, ...) {
-  va_list args;
-  int fi, oi;
-  char c, *s;
-  char buf[12];
-
-  va_start(args, fmt);
-
-  for(fi = 0, oi = 0; (c = fmt[fi]) != '\0'; fi++) {
-    if(c != '%') {
-      out[oi++] = c;
-    }
-    else {
-      switch((c = fmt[++fi])) {
-        case 'd': {
-          int arg = va_arg(args, int);
-          unsigned int abs_arg;
-          int t = 0;
-
-          if (arg < 0) {
-            out[oi++] = '-';
-            // Handle INT_MIN explicitly
-            if (arg == INT_MIN) {
-                abs_arg = (unsigned int)(-(arg + 1)) + 1;
-            } else {
-                abs_arg = (unsigned int)(-arg);
-            }
-          } else {
-              abs_arg = (unsigned int)arg;
-          }
-
-          do {
-            buf[t++] = abs_arg % 10 + '0';
-            abs_arg /= 10;
-          } while(abs_arg);
-
-          while(t--) {
-            out[oi++] = buf[t];
-          }
-          break;
-        }
-        case 's': {
-          if((s = va_arg(args, char*)) == 0)
-            s = "(null)";
-          while(*s) {
-            out[oi++] = *s;
-            s++;
-          }
-          break;
-        }
-        case '%':
-          out[oi++] = '%';
-          break;
-        default:
-          out[oi++] = c;
-          break;
-      }
+  if(sign) {
+    if((int)num < 0) {
+      num = (unsigned int)-num;
+      putch('-');
     }
   }
 
+  do {
+    buf[idx++] = digits[num % base];
+    num /= base;
+  } while(num);
+
+  for(int i = idx - 1; i >= 0; --i)
+    putch(buf[i]);
+
+  return idx;
+}
+
+int printf(const char *fmt, ...) {
+  va_list ap;
+  va_start(ap, fmt);
+
+  unsigned int num;
+  char *s;
+  int cnt = 0;
+
+
+  for( ; *fmt; fmt++) {
+    if(*fmt != '%') {
+      putch(*fmt);
+      cnt++;
+      continue;
+    }
+
+    fmt++;
+    switch(*fmt) {
+      case 'c':
+        num = va_arg(ap, int);
+        cnt++;
+        putch((char)num);
+        break;
+
+      case 'd':
+      case 'i':
+        num = va_arg(ap, unsigned int);
+        cnt += print_num(10, num, 1);
+        break;
+
+      case 'u':
+        num = va_arg(ap, unsigned int);
+        cnt += print_num(10, num, 0);
+        break;
+
+      case 'o':
+        num = va_arg(ap, unsigned int);
+        cnt += print_num(8, num, 0);
+        break;
+
+      case 'x':
+      case 'X':
+        num = va_arg(ap, unsigned int);
+        cnt += print_num(16, num, 0);
+        break;
+
+      case 's':
+        s = va_arg(ap, char*);
+        if(!s) {
+          s = "(NULL)";
+        }
+
+        for (const char *p = s; *p; p++) {
+          cnt++;
+          putch(*p);
+        }
+        break;
+
+      case '%':
+        cnt++;
+        putch('%');
+        break;
+      
+      default:
+        return -1;
+    }
+  }
+
+  return cnt;
+}
+
+static char* sprint_num(char *str, char *end, int base, unsigned int num, bool sign) {
+  static const char digits[] = "0123456789abcdef";
+  char buf[15];
+  int idx = 0;
+
+  if(sign) {
+    if((int)num < 0) {
+      num = (unsigned int)-num;
+      if(str < end) {
+        *str = '-';
+      }
+      str++;
+    }
+  }
+
+  do {
+    buf[idx++] = digits[num % base];
+    num /= base;
+  } while(num);
+
+  while(idx) {
+    if(str < end) {
+      *str = buf[idx - 1];
+    }
+    str++;
+    idx--;
+  }
+
+  return str;
+}
+
+int vsprintf(char *out, const char *fmt, va_list ap) {
+  return vsnprintf(out, (size_t)-1, fmt, ap);
+}
+
+int sprintf(char *out, const char *fmt, ...) {
+  int rval;
+  va_list args;
+  va_start(args, fmt);
+  rval = vsprintf(out, fmt, args);
   va_end(args);
-  out[oi] = '\0';
-  
-  return oi;
+  return rval;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
+  int rval;
+  va_list args;
+  va_start(args, fmt);
+  rval = vsnprintf(out, n, fmt, args);
+  va_end(args);
+  return rval;
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  panic("Not implemented");
+  char *str, *end;
+  unsigned int num;
+  char *s;
+
+  str = out;
+  end = out + n;
+
+  if (end < str) {
+    end  = ((char *) - 1);
+    n = end - str;
+  }
+  
+  for( ; *fmt; fmt++) {
+    if(*fmt != '%') {
+      if(str < end) {
+        *str = *fmt;
+      }
+      str++;
+      continue;
+    }
+
+    fmt++;
+    switch(*fmt) {
+      case 'd':
+      case 'i':
+        num = va_arg(ap, unsigned int);
+        str = sprint_num(str, end, 10, num, 1);
+        break;
+
+      case 'u':
+        num = va_arg(ap, unsigned int);
+        str = sprint_num(str, end, 10, num, 0);
+        break;
+      
+      case 'o':
+        num = va_arg(ap, unsigned int);
+        str = sprint_num(str, end, 8, num, 0);
+        break;
+
+      case 'x':
+      case 'X':
+        num = va_arg(ap, unsigned int);
+        str = sprint_num(str, end, 16, num, 0);
+        break;
+
+      case 's':
+        s = va_arg(ap, char*);
+        if(!s) {
+          s = "(NULL)";
+        }
+      
+        while(*s) {
+          if(str < end) {
+            *str = *s;
+          }
+          s++;
+          str++;
+        }
+        break;
+
+      case '%':
+        if(str < end) {
+          *str = '%';
+        }
+        str++;
+        break;
+      
+      default:
+        return -1;
+    }
+  }
+
+  if (n > 0) {
+      if (str < end) {
+        *str = '\0';
+      }
+      else {
+        end[-1] = '\0';
+      }
+  }
+
+  return str - out;
 }
 
 #endif
