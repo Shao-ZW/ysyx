@@ -14,7 +14,7 @@ void npc_eval(int clk, int rst = 0) {
   top->rst = rst;
   top->clk = clk;
   top->eval();
-  vcd->dump(cur_time);
+  IFDEF(CONFIG_WAVE, vcd->dump(cur_time));
   cur_time++;
 }
 
@@ -41,9 +41,11 @@ void init_sim() {
   top = new Vtop{contextp};
   vcd = new VerilatedVcdC;
 
+  #ifdef CONFIG_WAVE
   Verilated::traceEverOn(true);
   top->trace(vcd, 0);
   vcd->open("./build/wave.vcd");
+  #endif
 
   restart();
 }

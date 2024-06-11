@@ -50,8 +50,8 @@ config WATCHPOINT
   bool "Enable watchpoint"
   default y
 
-config EXPRTEST
-  bool "Enable expr test"
+config WAVE
+  bool "Enable wave"
   default n
 
 config TRACE
@@ -121,5 +121,6 @@ endmenu
 
 if MODE_SYSTEM
 source "csrc/memory/Kconfig"
+source "csrc/device/Kconfig"
 endif
 
