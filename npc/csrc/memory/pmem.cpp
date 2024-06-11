@@ -16,6 +16,22 @@ uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 
 extern "C" uint32_t pmem_read(paddr_t raddr) {
   // 总是读取地址为`raddr & ~0x3u`的4字节返回
+  #ifdef CONFIG_HAS_TIMER
+  static uint64_t nowtime;
+  if(raddr == CONFIG_RTC_MMIO) {
+    return (uint32_t)nowtime;
+  }
+  if(raddr == CONFIG_RTC_MMIO + 4) {
+    nowtime = get_time();
+    return nowtime >> 32;
+  }
+  
+  // Prevent out-of-bounds access
+  if(raddr > CONFIG_MBASE + CONFIG_MSIZE) {
+    return 0;
+  }
+  #endif
+
   uint32_t rdata = *(uint32_t*)guest_to_host(raddr & ~0x3u);
   IFDEF(CONFIG_MTRACE, mtrace_read(raddr, rdata));
   return rdata;
@@ -25,6 +41,13 @@ extern "C" void pmem_write(paddr_t waddr, uint32_t wdata, char wmask) {
   // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
   // `wmask`中每比特表示`wdata`中1个字节的掩码,
   // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
+  #ifdef CONFIG_HAS_SERIAL
+  if(waddr == CONFIG_SERIAL_MMIO) {
+    putchar(wdata & 0xFF);
+    return;
+  }
+  #endif
+
   IFDEF(CONFIG_MTRACE, mtrace_write(waddr, wdata, wmask));
   uint8_t* p = guest_to_host(waddr & ~0x3u);
 
